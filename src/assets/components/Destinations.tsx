@@ -1,105 +1,39 @@
-interface Destination {
-  id: number;
-  name: string;
-  country: string;
-  image: string;
-  categories: string[];
-}
+import { Link } from 'react-router-dom';
+import type { Trip } from '../../types/trip';
+import TripCard from './TripCard';
 
-const destinations: Destination[] = [
-  {
-    id: 1,
-    name: 'Istanbul',
-    country: 'Turkey',
-    image: 'https://images.pexels.com/photos/3601425/pexels-photo-3601425.jpeg?auto=compress&cs=tinysrgb&w=400',
-    categories: ['Flights', 'Hotels', 'Resorts']
-  },
-  {
-    id: 2,
-    name: 'Sydney',
-    country: 'Australia',
-    image: 'https://images.pexels.com/photos/995765/pexels-photo-995765.jpeg?auto=compress&cs=tinysrgb&w=400',
-    categories: ['Flights', 'Hotels', 'Resorts']
-  },
-  {
-    id: 3,
-    name: 'Baku',
-    country: 'Azerbaijan',
-    image: 'https://images.pexels.com/photos/3243090/pexels-photo-3243090.jpeg?auto=compress&cs=tinysrgb&w=400',
-    categories: ['Flights', 'Hotels', 'Resorts']
-  },
-  {
-    id: 4,
-    name: 'Male',
-    country: 'Maldives',
-    image: 'https://images.pexels.com/photos/3250613/pexels-photo-3250613.jpeg?auto=compress&cs=tinysrgb&w=400',
-    categories: ['Flights', 'Hotels', 'Resorts']
-  },
-  {
-    id: 5,
-    name: 'Paris',
-    country: 'France',
-    image: 'https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg?auto=compress&cs=tinysrgb&w=400',
-    categories: ['Flights', 'Hotels', 'Resorts']
-  },
-  {
-    id: 6,
-    name: 'New York',
-    country: 'US',
-    image: 'https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=400',
-    categories: ['Flights', 'Hotels', 'Resorts']
-  },
-  {
-    id: 7,
-    name: 'London',
-    country: 'UK',
-    image: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg?auto=compress&cs=tinysrgb&w=400',
-    categories: ['Flights', 'Hotels', 'Resorts']
-  },
-  {
-    id: 8,
-    name: 'Tokyo',
-    country: 'Japan',
-    image: 'https://images.pexels.com/photos/2187605/pexels-photo-2187605.jpeg?auto=compress&cs=tinysrgb&w=400',
-    categories: ['Flights', 'Hotels', 'Resorts']
-  },
-  {
-    id: 9,
-    name: 'Dubai',
-    country: 'UAE',
-    image: 'https://images.pexels.com/photos/1470502/pexels-photo-1470502.jpeg?auto=compress&cs=tinysrgb&w=400',
-    categories: ['Flights', 'Hotels', 'Resorts']
-  }
-];
+type DestinationsProps = {
+  trips: Trip[];
+  loading: boolean;
+  error: string;
+};
 
-export default function Destinations() {
+export default function Destinations({ trips, loading, error }: DestinationsProps) {
   return (
-    <section className="container mx-auto px-4 py-16">
-      <div className="flex items-center justify-between mb-8">
+    <section className="container mx-auto px-5 py-16 md:px-8">
+      <div className="mb-8 flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold mb-2">Plan your perfect trip</h2>
-          <p className="text-gray-600">Search Flights & Places Hire to our most popular destinations</p>
+          <h2 className="mb-2 text-3xl font-bold text-[#112211]">Featured Planned Trips</h2>
+          <p className="text-gray-600">Curated trip bundles with complete day-wise planning.</p>
         </div>
-        <button className="px-6 py-2 border border-[#8DD3BB] rounded-lg hover:bg-gray-50 transition">
-          See more places
-        </button>
+        <Link
+          to="/trips"
+          className="rounded-lg border border-[#8DD3BB] px-6 py-2 text-sm font-medium text-[#112211] transition hover:bg-[#f1f9f6]"
+        >
+          View all packages
+        </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {destinations.map((destination) => (
-          <div key={destination.id} className="flex gap-4 items-center p-4 border border-gray-200 rounded-xl hover:shadow-lg transition">
-            <img
-              src={destination.image}
-              alt={destination.name}
-              className="w-20 h-20 rounded-lg object-cover"
-            />
-            <div>
-              <h3 className="font-semibold text-lg">{destination.name}, {destination.country}</h3>
-              <p className="text-sm text-gray-600">{destination.categories.join(' • ')}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+      {loading ? <p className="text-gray-600">Loading packages...</p> : null}
+      {error ? <p className="text-red-600">{error}</p> : null}
+
+      {!loading && !error ? (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {trips.map((trip) => (
+            <TripCard key={trip._id} trip={trip} />
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }

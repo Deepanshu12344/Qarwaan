@@ -19,6 +19,7 @@
 
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const heroImages = [
   '/carousel1.png',
@@ -50,7 +51,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative h-[500px] bg-gradient-to-b from-gray-900 to-gray-800 overflow-hidden">
+    <section className="relative h-[640px] overflow-hidden bg-gradient-to-b from-[#0b1512] to-[#112211]">
       {heroImages.map((image, index) => (
         <div
           key={index}
@@ -65,12 +66,33 @@ export default function Hero() {
         />
       ))}
 
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/45" />
+      <div className="absolute -bottom-20 left-0 right-0 h-48 bg-gradient-to-t from-[#f4faf8] to-transparent" />
 
-      <div className="relative h-full flex flex-col items-center justify-center text-white">
-        <p className="text-lg mb-2 font-light tracking-wide">Helping Others</p>
-        <h1 className="text-6xl font-bold mb-4 tracking-wide">LIVE & TRAVEL</h1>
-        <p className="text-sm font-light">Special offers to suit your plan</p>
+      <div className="relative mx-auto flex h-full max-w-6xl flex-col items-start justify-center pl-1 pr-5 text-white md:pl-2 md:pr-8">
+        <p className="mb-3 rounded-full border border-white/30 bg-white/10 px-4 py-1 text-sm tracking-wide">
+          Tailor-made vacations by experts
+        </p>
+        <h2 className="max-w-3xl text-4xl font-extrabold leading-tight md:text-6xl">
+          Complete Planned Trips, Fully Customized For Your Dates.
+        </h2>
+        <p className="mt-4 max-w-2xl text-base text-white/90 md:text-lg">
+          Pick a package, customize it with our team, and travel with a fully managed itinerary built for your style.
+        </p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link
+            to="/trips"
+            className="rounded-lg bg-[#8DD3BB] px-6 py-3 text-sm font-semibold text-[#112211] transition hover:bg-[#7ec6ac]"
+          >
+            Explore Packages
+          </Link>
+          <Link
+            to="/contact"
+            className="rounded-lg border border-white/60 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/15"
+          >
+            Request Custom Plan
+          </Link>
+        </div>
       </div>
 
       <button

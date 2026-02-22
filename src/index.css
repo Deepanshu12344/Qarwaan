@@ -1,11 +1,15 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap');
 
 :root {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  --color-primary: #8dd3bb;
+  --color-deep: #112211;
+  --color-mist: #f4faf8;
+  font-family: 'Manrope', sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: #111827;
-  background-color: #f9fafb;
+  background-color: var(--color-mist);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -15,4 +19,14 @@
 body {
   margin: 0;
   min-height: 100vh;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(141, 211, 187, 0.16), transparent 25%),
+    radial-gradient(circle at 100% 100%, rgba(17, 34, 17, 0.06), transparent 35%),
+    var(--color-mist);
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Sora', sans-serif;
 }

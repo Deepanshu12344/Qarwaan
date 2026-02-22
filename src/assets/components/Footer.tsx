@@ -1,9 +1,10 @@
 import { Facebook, Twitter, Youtube, Instagram } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
     <footer className="bg-[#8DD3BB] py-12">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-5 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           <div>
             <h3 className="text-2xl font-bold mb-6">Qarwaan</h3>
@@ -26,43 +27,43 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Our Destinations</h4>
             <ul className="space-y-2 text-sm text-gray-700">
-              <li><a href="#" className="hover:underline">Canada</a></li>
-              <li><a href="#" className="hover:underline">Alaska</a></li>
-              <li><a href="#" className="hover:underline">France</a></li>
-              <li><a href="#" className="hover:underline">Iceland</a></li>
+              <li><a href="#" className="hover:underline">Kashmir</a></li>
+              <li><a href="#" className="hover:underline">Kerala</a></li>
+              <li><a href="#" className="hover:underline">Dubai</a></li>
+              <li><a href="#" className="hover:underline">Thailand</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Our Activities</h4>
+            <h4 className="font-semibold mb-4">Trip Planning</h4>
             <ul className="space-y-2 text-sm text-gray-700">
-              <li><a href="#" className="hover:underline">Northern Lights</a></li>
-              <li><a href="#" className="hover:underline">Cruising & sailing</a></li>
-              <li><a href="#" className="hover:underline">Multi-activities</a></li>
-              <li><a href="#" className="hover:underline">Kayaking</a></li>
+              <li><Link to="/trips" className="hover:underline">All Packages</Link></li>
+              <li><Link to="/trips?sort=rating" className="hover:underline">Top Rated Trips</Link></li>
+              <li><Link to="/trips?category=Domestic" className="hover:underline">Domestic Tours</Link></li>
+              <li><Link to="/contact" className="hover:underline">Custom Duration</Link></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Travel Blogs</h4>
+            <h4 className="font-semibold mb-4">Travel Styles</h4>
             <ul className="space-y-2 text-sm text-gray-700">
-              <li><a href="#" className="hover:underline">Bali Travel Guide</a></li>
-              <li><a href="#" className="hover:underline">Sri Lanks Travel Guide</a></li>
-              <li><a href="#" className="hover:underline">Peru Travel Guide</a></li>
-              <li><a href="#" className="hover:underline">Bali Travel Guide</a></li>
+              <li><a href="#" className="hover:underline">Family Holidays</a></li>
+              <li><a href="#" className="hover:underline">Honeymoon Trips</a></li>
+              <li><a href="#" className="hover:underline">Friends Group Tours</a></li>
+              <li><a href="#" className="hover:underline">Senior-friendly Trips</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold mb-4">About Us</h4>
             <ul className="space-y-2 text-sm text-gray-700">
-              <li><a href="#" className="hover:underline">Our Story</a></li>
+              <li><Link to="/" className="hover:underline">Our Story</Link></li>
               <li><a href="#" className="hover:underline">Work with us</a></li>
             </ul>
             <h4 className="font-semibold mb-4 mt-6">Contact Us</h4>
             <ul className="space-y-2 text-sm text-gray-700">
-              <li><a href="#" className="hover:underline">Our Story</a></li>
-              <li><a href="#" className="hover:underline">Work with us</a></li>
+              <li><a href="tel:+919999999999" className="hover:underline">+91 99999 99999</a></li>
+              <li><a href="mailto:hello@qarwaan.com" className="hover:underline">hello@qarwaan.com</a></li>
             </ul>
           </div>
         </div>

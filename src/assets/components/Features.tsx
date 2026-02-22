@@ -1,44 +1,58 @@
-import { Plane, Hotel } from 'lucide-react';
+import { ShieldCheck, Sparkles, TimerReset } from 'lucide-react';
+
+const featureVisuals = [
+  'https://images.pexels.com/photos/1008155/pexels-photo-1008155.jpeg?auto=compress&cs=tinysrgb&w=900',
+  'https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg?auto=compress&cs=tinysrgb&w=900',
+  'https://images.pexels.com/photos/2256306/pexels-photo-2256306.jpeg?auto=compress&cs=tinysrgb&w=900',
+];
 
 export default function Features() {
   return (
-    <section className="container mx-auto px-4 py-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="relative h-96 rounded-2xl overflow-hidden group">
-          <img
-            src="https://images.pexels.com/photos/2007401/pexels-photo-2007401.jpeg?auto=compress&cs=tinysrgb&w=800"
-            alt="Flights"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-            <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-              <h3 className="text-4xl font-bold mb-2">Flights</h3>
-              <p className="text-sm mb-6 opacity-90">Search Flights & Places Hire to our most popular destinations</p>
-              <button className="bg-[#8DD3BB] hover:bg-emerald-600 text-black px-6 py-3 rounded-lg font-medium transition flex items-center gap-2">
-                <Plane className="w-4 h-4" />
-                Show Flights
-              </button>
-            </div>
-          </div>
-        </div>
+    <section className="container mx-auto px-5 py-16 md:px-8">
+      <div className="mb-8 text-center">
+        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#3e7d69]">How We Work</p>
+        <h2 className="mt-3 text-3xl font-bold text-[#112211] md:text-4xl">Trip Planning Without The Stress</h2>
+      </div>
 
-        <div className="relative h-96 rounded-2xl overflow-hidden group">
-          <img
-            src="https://images.pexels.com/photos/2869499/pexels-photo-2869499.jpeg?auto=compress&cs=tinysrgb&w=800"
-            alt="Hotels"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-            <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-              <h3 className="text-4xl font-bold mb-2">Hotels</h3>
-              <p className="text-sm mb-6 opacity-90">Search hotels & Places Hire to our most popular destinations</p>
-              <button className="bg-[#8DD3BB] hover:bg-emerald-600 text-black px-6 py-3 rounded-lg font-medium transition flex items-center gap-2">
-                <Hotel className="w-4 h-4" />
-                Show Hotels
-              </button>
-            </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <article className="overflow-hidden rounded-2xl border border-[#d5ede5] bg-[#f4faf8]">
+          <img src={featureVisuals[0]} alt="Planned itinerary visual" className="h-36 w-full object-cover" />
+          <div className="p-6">
+          <div className="mb-4 inline-flex rounded-full bg-[#8DD3BB]/35 p-3">
+            <Sparkles className="h-5 w-5 text-[#114436]" />
           </div>
-        </div>
+          <h3 className="mb-2 text-xl font-bold text-[#112211]">Handcrafted Itineraries</h3>
+          <p className="text-sm leading-6 text-[#3d4f47]">
+            Every package includes activities, local transport, and practical timing so travelers know exactly what to expect.
+          </p>
+          </div>
+        </article>
+
+        <article className="overflow-hidden rounded-2xl border border-[#d5ede5] bg-white shadow-[0_18px_38px_rgba(17,34,17,0.08)]">
+          <img src={featureVisuals[1]} alt="Trip replanning visual" className="h-36 w-full object-cover" />
+          <div className="p-6">
+          <div className="mb-4 inline-flex rounded-full bg-[#8DD3BB]/35 p-3">
+            <TimerReset className="h-5 w-5 text-[#114436]" />
+          </div>
+          <h3 className="mb-2 text-xl font-bold text-[#112211]">Quick Replanning</h3>
+          <p className="text-sm leading-6 text-[#3d4f47]">
+            Need to switch dates or shorten from 7 to 5 days? Our team updates your trip plan with transparent cost impact.
+          </p>
+          </div>
+        </article>
+
+        <article className="overflow-hidden rounded-2xl border border-[#d5ede5] bg-[#f4faf8]">
+          <img src={featureVisuals[2]} alt="On-ground travel support visual" className="h-36 w-full object-cover" />
+          <div className="p-6">
+          <div className="mb-4 inline-flex rounded-full bg-[#8DD3BB]/35 p-3">
+            <ShieldCheck className="h-5 w-5 text-[#114436]" />
+          </div>
+          <h3 className="mb-2 text-xl font-bold text-[#112211]">Reliable On-Ground Support</h3>
+          <p className="text-sm leading-6 text-[#3d4f47]">
+            Dedicated coordinators help before and during the trip for smooth check-ins, transfers, and activity scheduling.
+          </p>
+          </div>
+        </article>
       </div>
     </section>
   );
