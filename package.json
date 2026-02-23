@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "node server/index.js",
-    "server:dev": "nodemon server/index.js"
+    "server:dev": "nodemon server/index.js",
+    "setup:media": "powershell -ExecutionPolicy Bypass -File ./scripts/setup-media-cdn.ps1"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -20,9 +21,12 @@
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.563.0",
     "mongoose": "^8.19.3",
+    "multer": "^2.0.2",
+    "pdfkit": "^0.17.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.13.0"
+    "react-router-dom": "^7.13.0",
+    "stripe": "^20.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -32,6 +36,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.24",
+    "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
@@ -40,8 +45,7 @@
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.48.0",    
-    "concurrently": "^9.2.1",
+    "typescript-eslint": "^8.48.0",
     "vite": "^7.3.1"
   }
 }

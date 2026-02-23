@@ -14,6 +14,16 @@ const inquirySchema = new mongoose.Schema(
     budget: { type: Number, min: 0 },
     notes: { type: String, trim: true },
     status: { type: String, enum: ['new', 'contacted', 'closed'], default: 'new' },
+    crmStage: {
+      type: String,
+      enum: ['new', 'contacted', 'qualified', 'proposal_sent', 'negotiation', 'won', 'lost', 'closed'],
+      default: 'new',
+    },
+    assignedAgent: { type: String, trim: true },
+    followUpAt: { type: Date },
+    followUpNote: { type: String, trim: true },
+    followUpQueuedAt: { type: Date },
+    followUpNotifiedAt: { type: Date },
   },
   { timestamps: true }
 );

@@ -41,6 +41,7 @@ export default function Footer() {
               <li><Link to="/trips?sort=rating" className="hover:underline">Top Rated Trips</Link></li>
               <li><Link to="/trips?category=Domestic" className="hover:underline">Domestic Tours</Link></li>
               <li><Link to="/contact" className="hover:underline">Custom Duration</Link></li>
+              <li><Link to="/guides" className="hover:underline">Travel Guides</Link></li>
             </ul>
           </div>
 
@@ -59,6 +60,10 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-gray-700">
               <li><Link to="/" className="hover:underline">Our Story</Link></li>
               <li><a href="#" className="hover:underline">Work with us</a></li>
+              <li><Link to="/legal/terms" className="hover:underline">Terms</Link></li>
+              <li><Link to="/legal/privacy" className="hover:underline">Privacy</Link></li>
+              <li><Link to="/legal/cancellation" className="hover:underline">Cancellation</Link></li>
+              <li><Link to="/legal/visa" className="hover:underline">Visa Disclaimer</Link></li>
             </ul>
             <h4 className="font-semibold mb-4 mt-6">Contact Us</h4>
             <ul className="space-y-2 text-sm text-gray-700">

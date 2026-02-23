@@ -1,5 +1,6 @@
 import { Clock3, MapPin, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSitePreferences } from '../../context/useSitePreferences';
 import type { Trip } from '../../types/trip';
 
 type TripCardProps = {
@@ -8,6 +9,7 @@ type TripCardProps = {
 
 export default function TripCard({ trip }: TripCardProps) {
   const finalPrice = trip.discountedPrice || trip.price;
+  const { formatMoney, t } = useSitePreferences();
 
   return (
     <article className="group overflow-hidden rounded-2xl border border-emerald-100 bg-white shadow-[0_16px_36px_rgba(17,34,17,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_50px_rgba(17,34,17,0.14)]">
@@ -15,6 +17,7 @@ export default function TripCard({ trip }: TripCardProps) {
         <img
           src={trip.heroImage}
           alt={trip.name}
+          loading="lazy"
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
         <span className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-[#112211]">
@@ -45,10 +48,10 @@ export default function TripCard({ trip }: TripCardProps) {
         <div className="flex items-end justify-between pt-2">
           <div>
             {trip.discountedPrice ? (
-              <p className="text-sm text-gray-400 line-through">INR {trip.price.toLocaleString()}</p>
+              <p className="text-sm text-gray-400 line-through">{formatMoney(trip.price)}</p>
             ) : null}
-            <p className="text-2xl font-bold text-[#112211]">INR {finalPrice.toLocaleString()}</p>
-            <p className="text-xs text-gray-500">per traveler</p>
+            <p className="text-2xl font-bold text-[#112211]">{formatMoney(finalPrice)}</p>
+            <p className="text-xs text-gray-500">{t('per_traveler')}</p>
           </div>
           <Link
             to={`/trips/${trip.slug}`}

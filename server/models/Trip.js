@@ -14,6 +14,9 @@ const tripSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
     location: { type: String, required: true, trim: true },
+    city: { type: String, trim: true },
+    country: { type: String, trim: true },
+    seasons: { type: [String], default: [] },
     durationDays: { type: Number, required: true, min: 1 },
     nights: { type: Number, required: true, min: 1 },
     category: { type: String, required: true, enum: ['Domestic', 'International'] },
@@ -29,6 +32,17 @@ const tripSchema = new mongoose.Schema(
     inclusions: { type: [String], default: [] },
     exclusions: { type: [String], default: [] },
     availableMonths: { type: [String], default: [] },
+    availability: {
+      type: [
+        {
+          date: { type: String, trim: true },
+          seatsLeft: { type: Number, min: 0, default: 0 },
+          status: { type: String, enum: ['open', 'waitlist', 'closed'], default: 'open' },
+        },
+      ],
+      default: [],
+    },
+    blackoutDates: { type: [String], default: [] },
     itinerary: { type: [itinerarySchema], default: [] },
     featured: { type: Boolean, default: false },
   },

@@ -3,6 +3,9 @@ export type Trip = {
   name: string;
   slug: string;
   location: string;
+  city?: string;
+  country?: string;
+  seasons?: string[];
   durationDays: number;
   nights: number;
   category: 'Domestic' | 'International';
@@ -18,6 +21,12 @@ export type Trip = {
   inclusions: string[];
   exclusions: string[];
   availableMonths: string[];
+  availability?: Array<{
+    date: string;
+    seatsLeft: number;
+    status: 'open' | 'waitlist' | 'closed';
+  }>;
+  blackoutDates?: string[];
   itinerary: {
     day: number;
     title: string;
@@ -55,4 +64,5 @@ export type BookingPayload = {
   travelers: number;
   travelDate: string;
   specialRequest?: string;
+  couponCode?: string;
 };
