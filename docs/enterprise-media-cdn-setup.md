@@ -11,10 +11,13 @@ Set these in `.env`:
 ```env
 MEDIA_UPLOAD_DIR=uploads
 MEDIA_UPLOAD_MAX_BYTES=15728640
+MEDIA_IMAGE_MAX_WIDTH=1800
+MEDIA_IMAGE_QUALITY=78
 MEDIA_PUBLIC_BASE_URL=https://api.example.com
 MEDIA_CDN_BASE_URL=https://cdn.example.com
 MEDIA_CACHE_CONTROL_PUBLIC=public, max-age=300
 MEDIA_CACHE_CONTROL_IMMUTABLE=public, max-age=31536000, immutable
+CRM_IMMEDIATE_DELIVERY=true
 ```
 
 ## 2) One-Time Media Setup
@@ -55,7 +58,16 @@ This creates:
   - Internal ingest API (`/api/analytics/events`)
   - Optional heatmap hooks (`VITE_HEATMAP_ENABLED=true` with `window.hj`/`window.clarity` loaded externally)
 
-## 7) Live FX & Referral Rewards
+## 7) Transactional Automation Notes
+- Event webhook payloads now include `X-Qarwaan-Event-Type` header for:
+  - `inquiry_received`
+  - `booking_received`
+  - `payment_success`
+  - `refund_processed`
+  - `follow_up_due`
+- Immediate dispatch can be toggled via `CRM_IMMEDIATE_DELIVERY` (default `true`).
+
+## 8) Live FX & Referral Rewards
 - Live FX endpoint: `GET /api/fx/rates?base=INR` (cached by `FX_CACHE_TTL_MS`).
 - Site currency display now uses live rates with fallback.
 - Referral rewards:

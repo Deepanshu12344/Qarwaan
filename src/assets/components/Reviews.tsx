@@ -45,40 +45,38 @@ const reviews: Review[] = [
 
 export default function Reviews() {
   return (
-    <section className="container mx-auto px-5 py-16 md:px-8">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h2 className="mb-2 text-3xl font-bold text-[#112211]">Client Feedback</h2>
-          <p className="text-gray-600">What travelers say about our planned package experience.</p>
-        </div>
-        <button className="rounded-lg border border-[#8DD3BB] px-6 py-2 text-[#112211] transition hover:bg-gray-50">
-          See All
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-        {reviews.map((review) => (
-          <div key={review.id} className="rounded-2xl bg-white p-6 shadow-md transition hover:shadow-xl">
-            <h3 className="mb-4 text-xl font-bold text-[#112211]">{review.quote}</h3>
-            <p className="mb-6 text-sm leading-relaxed text-gray-600">{review.description}</p>
-            <button className="mb-6 text-sm font-medium text-[#112211] hover:underline">View more</button>
-
-            <div className="mb-4 flex gap-1">
-              {[...Array(review.rating)].map((_, index) => (
-                <Star key={`${review.id}-${index}`} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-              ))}
-            </div>
-
-            <div className="mb-4">
-              <p className="font-semibold text-[#112211]">{review.author}</p>
-              <p className="text-sm text-gray-600">{review.source}</p>
-            </div>
-
-            <p className="mb-4 text-sm text-gray-500">Google Reviews</p>
-
-            <img src={review.image} alt={review.author} className="h-48 w-full rounded-xl object-cover" />
+    <section className="bg-[#f4efe7] py-20">
+      <div className="mx-auto max-w-6xl px-5 md:px-8">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="bt-kicker text-[#8c7c72]">Client Feedback</p>
+            <h2 className="mt-3 text-3xl font-semibold text-[#1f1a17] md:text-4xl">The trips that linger</h2>
+            <p className="mt-2 text-sm text-[#6b5f57]">Short notes from travelers who found their perfect story.</p>
           </div>
-        ))}
+          <button className="bt-button bt-button-outline text-[#1f1a17]">See All</button>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {reviews.map((review) => (
+            <div key={review.id} className="rounded-[26px] border border-[#e0d3c5] bg-white p-6">
+              <img src={review.image} alt={review.author} loading="lazy" className="mb-6 h-44 w-full rounded-[18px] object-cover" />
+              <p className="bt-kicker text-[#b38f6b]">Review</p>
+              <h3 className="mb-3 mt-3 text-xl font-semibold text-[#1f1a17]">{review.quote}</h3>
+              <p className="mb-6 text-sm leading-relaxed text-[#6b5f57]">{review.description}</p>
+
+              <div className="mb-4 flex gap-1">
+                {[...Array(review.rating)].map((_, index) => (
+                  <Star key={`${review.id}-${index}`} className="h-4 w-4 fill-[#b38f6b] text-[#b38f6b]" />
+                ))}
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold text-[#1f1a17]">{review.author}</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-[#8c7c72]">{review.source}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

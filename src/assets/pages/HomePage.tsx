@@ -1,44 +1,83 @@
-import { useEffect, useState } from 'react';
-import { getTrips } from '../../lib/api';
-import Header from '../components/Header';
+import { useEffect } from 'react';
+import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import Destinations from '../components/Destinations';
-import Features from '../components/Features';
-import Reviews from '../components/Reviews';
-import Newsletter from '../components/Newsletter';
+import Intro from '../components/Intro';
+import JourneyGrid from '../components/JourneyGrid';
+import TripsSection from '../components/TripsSection';
+import MediaLogos from '../components/MediaLogos';
+import VideoSection from '../components/VideoSection';
+import WhatWeDo from '../components/WhatWeDo';
+import PursuitSection from '../components/PursuitSection';
+import GuideSection from '../components/GuideSection';
+import WhyQarwaan from '../components/WhyQarwaan';
+import CTASection from '../components/CTASection';
 import Footer from '../components/Footer';
-import TripPlannerForm from '../components/TripPlannerForm';
-import type { Trip } from '../../types/trip';
+import { useSeo } from '../../lib/seo';
 
 export const HomePage = () => {
-  const [trips, setTrips] = useState<Trip[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
   useEffect(() => {
-    const fetchFeaturedTrips = async () => {
-      try {
-        const data = await getTrips({ featured: true });
-        setTrips(data.slice(0, 6));
-      } catch (fetchError) {
-        setError(fetchError instanceof Error ? fetchError.message : 'Failed to load packages');
-      } finally {
-        setLoading(false);
-      }
-    };
+    const items = Array.from(document.querySelectorAll('.reveal'));
+    if (!items.length) {
+      return;
+    }
 
-    fetchFeaturedTrips();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    items.forEach((item) => observer.observe(item));
+
+    return () => observer.disconnect();
   }, []);
+
+  useSeo({
+    title: 'Custom Trip Packages and Itinerary Planning',
+    description:
+      'Discover curated domestic and international packages, custom itinerary planning, and instant travel support with Qarwaan.',
+    path: '/',
+  });
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <Navbar />
       <Hero />
-      <TripPlannerForm />
-      <Destinations trips={trips} loading={loading} error={error} />
-      <Features />
-      <Reviews />
-      <Newsletter />
+      <div className="reveal">
+        <Intro />
+      </div>
+      <div className="reveal">
+        <JourneyGrid />
+      </div>
+      <div className="reveal">
+        <TripsSection />
+      </div>
+      <div className="reveal">
+        <MediaLogos />
+      </div>
+      <div className="reveal">
+        <VideoSection />
+      </div>
+      <div className="reveal">
+        <WhatWeDo />
+      </div>
+      <div className="reveal">
+        <PursuitSection />
+      </div>
+      <div className="reveal">
+        <GuideSection />
+      </div>
+      <div className="reveal">
+        <WhyQarwaan />
+      </div>
+      <div className="reveal">
+        <CTASection />
+      </div>
       <Footer />
     </div>
   );

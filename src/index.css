@@ -1,15 +1,16 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --color-primary: #8dd3bb;
-  --color-deep: #112211;
-  --color-mist: #f4faf8;
-  font-family: 'Manrope', sans-serif;
+  --q-black: #000000;
+  --q-white: #ffffff;
+  --q-accent: #f2f2f2;
+  --q-gold: #d2b48c;
+  font-family: 'Inter', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #111827;
-  background-color: var(--color-mist);
+  color: var(--q-black);
+  background-color: var(--q-white);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -19,14 +20,89 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(141, 211, 187, 0.16), transparent 25%),
-    radial-gradient(circle at 100% 100%, rgba(17, 34, 17, 0.06), transparent 35%),
-    var(--color-mist);
+  background: var(--q-white);
 }
 
 h1,
 h2,
-h3 {
-  font-family: 'Sora', sans-serif;
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.q-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.7rem;
+}
+
+.q-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 2.2rem;
+  border-radius: 0.125rem;
+  border: 1px solid var(--q-black);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  background: var(--q-black);
+  color: var(--q-white);
+  transition: all 0.3s ease;
+}
+
+.q-button:hover {
+  background: transparent;
+  border-color: var(--q-black);
+  color: var(--q-black);
+}
+
+.q-button-outline {
+  background: transparent;
+  color: var(--q-black);
+  border-color: currentColor;
+}
+
+.q-button-outline:hover {
+  background: var(--q-black);
+  color: var(--q-white);
+}
+
+.q-button-outline-light {
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
+}
+
+.q-button-outline-light:hover {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

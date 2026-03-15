@@ -10,30 +10,34 @@ type DestinationsProps = {
 
 export default function Destinations({ trips, loading, error }: DestinationsProps) {
   return (
-    <section className="container mx-auto px-5 py-16 md:px-8">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h2 className="mb-2 text-3xl font-bold text-[#112211]">Featured Planned Trips</h2>
-          <p className="text-gray-600">Curated trip bundles with complete day-wise planning.</p>
+    <section className="bg-[#f4efe7] py-20">
+      <div className="mx-auto max-w-6xl px-5 md:px-8">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="bt-kicker text-[#8c7c72]">Your Stories</p>
+            <h2 className="mt-3 text-3xl font-semibold text-[#1f1a17] md:text-4xl">
+              Featured planned trips
+            </h2>
+            <p className="mt-2 text-sm text-[#6b5f57]">
+              Curated journey design with a focus on craft, surprise, and storytelling.
+            </p>
+          </div>
+          <Link to="/trips" className="bt-button bt-button-outline text-[#1f1a17]">
+            View all trips
+          </Link>
         </div>
-        <Link
-          to="/trips"
-          className="rounded-lg border border-[#8DD3BB] px-6 py-2 text-sm font-medium text-[#112211] transition hover:bg-[#f1f9f6]"
-        >
-          View all packages
-        </Link>
-      </div>
 
       {loading ? <p className="text-gray-600">Loading packages...</p> : null}
       {error ? <p className="text-red-600">{error}</p> : null}
 
-      {!loading && !error ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {trips.map((trip) => (
-            <TripCard key={trip._id} trip={trip} />
-          ))}
-        </div>
-      ) : null}
+        {!loading && !error ? (
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {trips.map((trip) => (
+              <TripCard key={trip._id} trip={trip} />
+            ))}
+          </div>
+        ) : null}
+      </div>
     </section>
   );
 }

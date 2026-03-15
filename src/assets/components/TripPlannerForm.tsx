@@ -48,21 +48,24 @@ export default function SearchForm() {
 
   return (
     <section className="relative z-20 -mt-24 px-5 md:px-8">
-      <div className="mx-auto max-w-6xl rounded-3xl border border-emerald-100 bg-white p-6 shadow-[0_30px_70px_rgba(17,34,17,0.12)] md:p-8">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h3 className="text-2xl font-bold text-[#112211]">Plan My Trip in 30 Seconds</h3>
-            <p className="text-sm text-gray-600">Tell us your basics including custom trip days and our expert will call you.</p>
-          </div>
+      <div className="mx-auto max-w-5xl rounded-[32px] border border-[#e6d9ca] bg-white/95 p-10 shadow-[0_30px_70px_rgba(31,26,23,0.12)]">
+        <div className="mb-8 text-center">
+          <p className="bt-kicker text-[#8c7c72]">Made For You</p>
+          <h3 className="mt-3 text-3xl font-semibold text-[#1f1a17]">
+            Travel design with an editor’s eye and a storyteller’s heart.
+          </h3>
+          <p className="mt-3 text-sm text-[#6b5f57]">
+            Share a few details and we will shape a tailor-made itinerary for your dates.
+          </p>
         </div>
 
-        <form className="grid grid-cols-1 gap-4 md:grid-cols-7" onSubmit={handleSubmit}>
+        <form className="grid grid-cols-1 gap-4 md:grid-cols-6" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Full name"
             value={fullName}
             onChange={(event) => setFullName(event.target.value)}
-            className="rounded-xl border border-gray-200 px-4 py-3 focus:border-[#8DD3BB] focus:outline-none md:col-span-2"
+            className="border-b border-[#d9cbbb] bg-transparent px-2 py-3 text-sm outline-none focus:border-[#1f1a17] md:col-span-2"
             required
           />
           <input
@@ -70,17 +73,17 @@ export default function SearchForm() {
             placeholder="Email address"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="rounded-xl border border-gray-200 px-4 py-3 focus:border-[#8DD3BB] focus:outline-none md:col-span-2"
+            className="border-b border-[#d9cbbb] bg-transparent px-2 py-3 text-sm outline-none focus:border-[#1f1a17] md:col-span-2"
             required
           />
           <div className="relative md:col-span-2">
-            <PhoneCall className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <PhoneCall className="absolute left-1 top-1/2 h-4 w-4 -translate-y-1/2 text-[#b7a79a]" />
             <input
               type="text"
               placeholder="Phone number"
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
-              className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-4 focus:border-[#8DD3BB] focus:outline-none"
+              className="w-full border-b border-[#d9cbbb] bg-transparent py-3 pl-7 pr-2 text-sm outline-none focus:border-[#1f1a17]"
               required
             />
           </div>
@@ -90,26 +93,26 @@ export default function SearchForm() {
             placeholder="City"
             value={city}
             onChange={(event) => setCity(event.target.value)}
-            className="rounded-xl border border-gray-200 px-4 py-3 focus:border-[#8DD3BB] focus:outline-none md:col-span-2"
+            className="border-b border-[#d9cbbb] bg-transparent px-2 py-3 text-sm outline-none focus:border-[#1f1a17] md:col-span-2"
           />
           <div className="relative md:col-span-2">
-            <CalendarDays className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <CalendarDays className="absolute left-1 top-1/2 h-4 w-4 -translate-y-1/2 text-[#b7a79a]" />
             <input
               type="text"
-              placeholder="Preferred month (e.g. June)"
+              placeholder="Preferred month"
               value={travelMonth}
               onChange={(event) => setTravelMonth(event.target.value)}
-              className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-4 focus:border-[#8DD3BB] focus:outline-none"
+              className="w-full border-b border-[#d9cbbb] bg-transparent py-3 pl-7 pr-2 text-sm outline-none focus:border-[#1f1a17]"
             />
           </div>
           <div className="relative md:col-span-1">
-            <Users className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Users className="absolute left-1 top-1/2 h-4 w-4 -translate-y-1/2 text-[#b7a79a]" />
             <input
               type="number"
               min={1}
               value={travelers}
               onChange={(event) => setTravelers(event.target.value)}
-              className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-4 focus:border-[#8DD3BB] focus:outline-none"
+              className="w-full border-b border-[#d9cbbb] bg-transparent py-3 pl-7 pr-2 text-sm outline-none focus:border-[#1f1a17]"
               placeholder="Travelers"
               required
             />
@@ -119,21 +122,21 @@ export default function SearchForm() {
             min={1}
             value={durationDays}
             onChange={(event) => setDurationDays(event.target.value)}
-            className="rounded-xl border border-gray-200 px-4 py-3 focus:border-[#8DD3BB] focus:outline-none md:col-span-1"
+            className="border-b border-[#d9cbbb] bg-transparent px-2 py-3 text-sm outline-none focus:border-[#1f1a17] md:col-span-1"
             placeholder="Trip days"
             required
           />
           <button
             type="submit"
             disabled={loading}
-            className="rounded-xl bg-[#112211] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0a130a] disabled:cursor-not-allowed disabled:opacity-60 md:col-span-1"
+            className="md:col-span-6 bt-button mt-2 w-full justify-center disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {loading ? 'Submitting...' : 'Get Callback'}
+            {loading ? 'Submitting...' : 'Request A Callback'}
           </button>
         </form>
 
-        {message ? <p className="mt-4 text-sm font-medium text-emerald-700">{message}</p> : null}
-        {error ? <p className="mt-4 text-sm font-medium text-rose-600">{error}</p> : null}
+        {message ? <p className="mt-4 text-center text-sm font-medium text-[#2f5a3f]">{message}</p> : null}
+        {error ? <p className="mt-4 text-center text-sm font-medium text-[#9c3d2a]">{error}</p> : null}
       </div>
     </section>
   );

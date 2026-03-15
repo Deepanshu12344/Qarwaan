@@ -1,75 +1,73 @@
-import { Facebook, Twitter, Youtube, Instagram } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
+
+const columns = [
+  {
+    title: 'Destinations',
+    items: ['Japan', 'Italy', 'Morocco', 'Peru', 'Iceland'],
+  },
+  {
+    title: 'Experiences',
+    items: ['Adventure', 'Culture', 'Food & Wine', 'Wildlife', 'Wellness'],
+  },
+  {
+    title: 'Company',
+    items: ['About QARWAAN', 'Our Story', 'Press', 'Careers'],
+  },
+  {
+    title: 'Support',
+    items: ['Contact', 'FAQ', 'Terms', 'Privacy'],
+  },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-[#8DD3BB] py-12">
-      <div className="container mx-auto px-5 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+    <footer id="footer" className="bg-black py-16 text-white">
+      <div className="mx-auto max-w-[1200px] px-4">
+        <div className="mb-12 flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
-            <h3 className="text-2xl font-bold mb-6">Qarwaan</h3>
-            <div className="flex gap-4">
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                <Youtube className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                <Instagram className="w-5 h-5" />
-              </a>
+            <h3 className="text-2xl font-semibold uppercase tracking-[0.35em]">QARWAAN</h3>
+            <p className="mt-3 text-sm text-white/70">Luxury journeys designed with editorial clarity.</p>
+          </div>
+          <form className="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+            <input
+              type="email"
+              placeholder="Email address"
+              className="flex-1 rounded-sm border border-white/30 bg-transparent px-4 py-3 text-sm text-white outline-none"
+            />
+            <button type="submit" className="q-button q-button-outline text-white">
+              Sign Up
+            </button>
+          </form>
+        </div>
+
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          {columns.map((column) => (
+            <div key={column.title}>
+              <h4 className="text-xs uppercase tracking-[0.2em] text-white/60">{column.title}</h4>
+              <ul className="mt-4 space-y-2 text-sm text-white/70">
+                {column.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </div>
-          </div>
+          ))}
+        </div>
 
-          <div>
-            <h4 className="font-semibold mb-4">Our Destinations</h4>
-            <ul className="space-y-2 text-sm text-gray-700">
-              <li><a href="#" className="hover:underline">Kashmir</a></li>
-              <li><a href="#" className="hover:underline">Kerala</a></li>
-              <li><a href="#" className="hover:underline">Dubai</a></li>
-              <li><a href="#" className="hover:underline">Thailand</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-4">Trip Planning</h4>
-            <ul className="space-y-2 text-sm text-gray-700">
-              <li><Link to="/trips" className="hover:underline">All Packages</Link></li>
-              <li><Link to="/trips?sort=rating" className="hover:underline">Top Rated Trips</Link></li>
-              <li><Link to="/trips?category=Domestic" className="hover:underline">Domestic Tours</Link></li>
-              <li><Link to="/contact" className="hover:underline">Custom Duration</Link></li>
-              <li><Link to="/guides" className="hover:underline">Travel Guides</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-4">Travel Styles</h4>
-            <ul className="space-y-2 text-sm text-gray-700">
-              <li><a href="#" className="hover:underline">Family Holidays</a></li>
-              <li><a href="#" className="hover:underline">Honeymoon Trips</a></li>
-              <li><a href="#" className="hover:underline">Friends Group Tours</a></li>
-              <li><a href="#" className="hover:underline">Senior-friendly Trips</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-4">About Us</h4>
-            <ul className="space-y-2 text-sm text-gray-700">
-              <li><Link to="/" className="hover:underline">Our Story</Link></li>
-              <li><a href="#" className="hover:underline">Work with us</a></li>
-              <li><Link to="/legal/terms" className="hover:underline">Terms</Link></li>
-              <li><Link to="/legal/privacy" className="hover:underline">Privacy</Link></li>
-              <li><Link to="/legal/cancellation" className="hover:underline">Cancellation</Link></li>
-              <li><Link to="/legal/visa" className="hover:underline">Visa Disclaimer</Link></li>
-            </ul>
-            <h4 className="font-semibold mb-4 mt-6">Contact Us</h4>
-            <ul className="space-y-2 text-sm text-gray-700">
-              <li><a href="tel:+919999999999" className="hover:underline">+91 99999 99999</a></li>
-              <li><a href="mailto:hello@qarwaan.com" className="hover:underline">hello@qarwaan.com</a></li>
-            </ul>
+        <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 text-xs uppercase tracking-[0.2em] text-white/60 md:flex-row">
+          <span>Qarwaan Travel</span>
+          <div className="flex gap-4">
+            <a href="#" aria-label="Facebook" className="text-white/70 hover:text-white">
+              <Facebook className="h-4 w-4" />
+            </a>
+            <a href="#" aria-label="Instagram" className="text-white/70 hover:text-white">
+              <Instagram className="h-4 w-4" />
+            </a>
+            <a href="#" aria-label="Twitter" className="text-white/70 hover:text-white">
+              <Twitter className="h-4 w-4" />
+            </a>
+            <a href="#" aria-label="YouTube" className="text-white/70 hover:text-white">
+              <Youtube className="h-4 w-4" />
+            </a>
           </div>
         </div>
       </div>
