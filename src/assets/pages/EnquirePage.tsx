@@ -1,11 +1,32 @@
+import { useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useSeo } from '../../lib/seo';
+import { trips } from '../data/trips';
 
 const inputBase =
   'w-full rounded-lg border border-black/10 bg-white px-4 py-3 text-sm text-black placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-black/20';
 
 export default function EnquirePage() {
+  const location = useLocation();
+  const countryParam = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('country')?.trim().toLowerCase() ?? '';
+  }, [location.search]);
+  const posterTrip = useMemo(() => {
+    if (!countryParam) {
+      return null;
+    }
+    return (
+      trips.find(
+        (trip) =>
+          trip.title.toLowerCase() === countryParam ||
+          (trip.location ?? '').toLowerCase() === countryParam,
+      ) ?? null
+    );
+  }, [countryParam]);
+
   useSeo({
     title: 'Enquire | Qarwaan',
     description: 'Begin your luxury travel enquiry with Qarwaan.',
@@ -28,140 +49,167 @@ export default function EnquirePage() {
             </h1>
           </div>
 
-          <div className="mt-10">
-            <div className="bg-white p-6 shadow-[0_12px_30px_rgba(0,0,0,0.06)] md:p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-500">Your Trip</p>
-              <div className="mt-6 grid grid-cols-1 gap-5">
-                <div>
-                  <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                    Where would you like to go?
-                  </label>
-                  <select className={`${inputBase} mt-2`}>
-                    <option>Select as many options you want</option>
-                    <option>Japan</option>
-                    <option>Italy</option>
-                    <option>Morocco</option>
-                    <option>Peru</option>
-                    <option>Iceland</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 whitespace-nowrap">
-                    When would you like to go?
-                  </label>
-                  <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-3">
-                    <select className={inputBase}>
-                      <option>Select a month</option>
-                      <option>January</option>
-                      <option>February</option>
-                      <option>March</option>
-                    </select>
-                    <select className={inputBase}>
-                      <option>Select a year</option>
-                      <option>2026</option>
-                      <option>2027</option>
-                      <option>2028</option>
-                    </select>
-                    <input className={inputBase} placeholder="Duration of trip" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="mt-10 md:flex md:items-stretch md:gap-8">
+            <div className="flex-1 space-y-8">
+              <div className="bg-white p-6 shadow-[0_12px_30px_rgba(0,0,0,0.06)] md:p-8">
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-500">Your Trip</p>
+                <div className="mt-6 grid grid-cols-1 gap-5">
                   <div>
                     <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                      How many people are travelling?
+                      Where would you like to go?
                     </label>
                     <select className={`${inputBase} mt-2`}>
-                      <option>Select a number</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4+</option>
+                      <option>Select as many options you want</option>
+                      <option>Japan</option>
+                      <option>Italy</option>
+                      <option>Morocco</option>
+                      <option>Peru</option>
+                      <option>Iceland</option>
                     </select>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 whitespace-nowrap">
+                      When would you like to go?
+                    </label>
+                    <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-3">
+                      <select className={inputBase}>
+                        <option>Select a month</option>
+                        <option>January</option>
+                        <option>February</option>
+                        <option>March</option>
+                      </select>
+                      <select className={inputBase}>
+                        <option>Select a year</option>
+                        <option>2026</option>
+                        <option>2027</option>
+                        <option>2028</option>
+                      </select>
+                      <input className={inputBase} placeholder="Duration of trip" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                      <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+                        How many people are travelling?
+                      </label>
+                      <select className={`${inputBase} mt-2`}>
+                        <option>Select a number</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4+</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+                        How much would you like to spend per person?
+                      </label>
+                      <div className="mt-3">
+                        <div className="mb-2 flex justify-between text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-gray-500">
+                          <span>INR 5,000</span>
+                          <span>INR 10,000</span>
+                          <span>INR 20,000+</span>
+                        </div>
+                        <input type="range" min="5000" max="20000" className="w-full accent-black" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+                      Any other comments or requests?
+                    </label>
+                    <textarea
+                      className={`${inputBase} mt-2 min-h-[120px]`}
+                      placeholder="E.g. special occasion, any must-do or don'ts"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-6 shadow-[0_12px_30px_rgba(0,0,0,0.06)] md:p-8">
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-500">Your Details</p>
+                <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+                  <div className="md:col-span-2">
+                    <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+                      Your Name*
+                    </label>
+                    <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
+                      <input className={inputBase} placeholder="First name" />
+                      <input className={inputBase} placeholder="Last name" />
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+                      Email Address*
+                    </label>
+                    <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
+                      <input className={inputBase} placeholder="example@email.com" />
+                      <input className={inputBase} placeholder="Confirm email" />
+                    </div>
                   </div>
                   <div>
                     <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                      How much would you like to spend per person?
+                      Telephone*
                     </label>
-                    <div className="mt-3">
-                      <div className="mb-2 flex justify-between text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-gray-500">
-                        <span>₹5,000</span>
-                        <span>₹10,000</span>
-                        <span>₹20,000+</span>
-                      </div>
-                      <input type="range" min="5000" max="20000" className="w-full accent-black" />
+                    <div className="mt-2 flex gap-2">
+                      <select className="rounded-lg border border-black/10 bg-white px-3 py-3 text-sm">
+                        <option>+91</option>
+                        <option>+44</option>
+                        <option>+1</option>
+                      </select>
+                      <input className={inputBase} placeholder="Phone number" />
                     </div>
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+                      How did you hear about us?
+                    </label>
+                    <select className={`${inputBase} mt-2`}>
+                      <option>Select</option>
+                      <option>Recommendation</option>
+                      <option>Press</option>
+                      <option>Instagram</option>
+                    </select>
                   </div>
                 </div>
 
-                <div>
-                  <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                    Any other comments or requests?
+                <div className="mt-6 flex items-center gap-3 text-sm text-gray-600">
+                  <label className="inline-flex items-center gap-2">
+                    <input type="checkbox" className="h-4 w-4 accent-black" />
+                    Sign up to our newsletter for weekly inspiration curated by our Travel Experts
                   </label>
-                  <textarea className={`${inputBase} mt-2 min-h-[120px]`} placeholder="E.g. special occasion, any must-do or don'ts" />
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <div className="mt-8 bg-white p-6 shadow-[0_12px_30px_rgba(0,0,0,0.06)] md:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-500">Your Details</p>
-            <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
-              <div className="md:col-span-2">
-                <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                  Your Name*
-                </label>
-                <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <input className={inputBase} placeholder="First name" />
-                  <input className={inputBase} placeholder="Last name" />
+                <div className="mt-8">
+                  <button className="q-button !bg-black !text-white !border-black">Submit enquiry</button>
                 </div>
-              </div>
-              <div className="md:col-span-2">
-                <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                  Email Address*
-                </label>
-                <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <input className={inputBase} placeholder="example@email.com" />
-                  <input className={inputBase} placeholder="Confirm email" />
-                </div>
-              </div>
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                  Telephone*
-                </label>
-                <div className="mt-2 flex gap-2">
-                  <select className="rounded-lg border border-black/10 bg-white px-3 py-3 text-sm">
-                    <option>+91</option>
-                    <option>+44</option>
-                    <option>+1</option>
-                  </select>
-                  <input className={inputBase} placeholder="Phone number" />
-                </div>
-              </div>
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                  How did you hear about us?
-                </label>
-                <select className={`${inputBase} mt-2`}>
-                  <option>Select</option>
-                  <option>Recommendation</option>
-                  <option>Press</option>
-                  <option>Instagram</option>
-                </select>
               </div>
             </div>
 
-            <div className="mt-6 flex items-center gap-3 text-sm text-gray-600">
-              <label className="inline-flex items-center gap-2">
-                <input type="checkbox" className="h-4 w-4 accent-black" />
-                Sign up to our newsletter for weekly inspiration curated by our Travel Experts
-              </label>
-            </div>
-
-            <div className="mt-8">
-              <button className="q-button !bg-black !text-white !border-black">Submit enquiry</button>
-            </div>
+            {posterTrip ? (
+              <aside className="mt-8 w-full shrink-0 md:mt-0 md:w-[360px]">
+                <div className="flex h-full flex-col overflow-hidden bg-white shadow-[0_12px_30px_rgba(0,0,0,0.06)]">
+                  <div
+                    className="min-h-[320px] w-full flex-1 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${posterTrip.hero?.image ?? posterTrip.image})` }}
+                  />
+                  <div className="p-4">
+                    <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
+                      {posterTrip.location ?? posterTrip.title}
+                    </p>
+                    <h3 className="mt-3 text-lg font-semibold uppercase tracking-[0.18em] text-black">
+                      {posterTrip.hero?.subtitle ?? posterTrip.description}
+                    </h3>
+                    <p className="mt-3 text-sm text-gray-600">
+                      {posterTrip.nights ?? posterTrip.stats?.duration ?? 'Curated journey'}
+                    </p>
+                  </div>
+                </div>
+              </aside>
+            ) : null}
           </div>
         </section>
       </div>
