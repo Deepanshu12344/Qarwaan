@@ -9,10 +9,17 @@ const navItems = [
 
 type NavbarVariant = 'light' | 'transparent';
 
-export default function Navbar({ variant = 'transparent' }: { variant?: NavbarVariant }) {
+export default function Navbar({
+  variant = 'transparent',
+  heroOffset,
+}: {
+  variant?: NavbarVariant;
+  heroOffset?: number;
+}) {
   const [solidHeader, setSolidHeader] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const lastScrollY = useRef(0);
+  const headerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (variant === 'light') {
@@ -23,8 +30,8 @@ export default function Navbar({ variant = 'transparent' }: { variant?: NavbarVa
 
     const handleScroll = () => {
       const currentY = window.scrollY;
-      const heroThreshold = window.innerHeight * 0.9;
-      const pastHero = currentY > heroThreshold;
+      const pastHero =
+        heroOffset && heroOffset > 0 ? currentY >= heroOffset : currentY > window.innerHeight * 0.9;
       const scrollingUp = currentY < lastScrollY.current;
 
       setSolidHeader(pastHero);
@@ -35,7 +42,7 @@ export default function Navbar({ variant = 'transparent' }: { variant?: NavbarVa
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [variant]);
+  }, [variant, heroOffset]);
 
   const textColor = solidHeader ? 'text-black' : 'text-white';
   const mutedText = solidHeader ? 'text-black/70' : 'text-white/80';
@@ -44,7 +51,11 @@ export default function Navbar({ variant = 'transparent' }: { variant?: NavbarVa
   const translateClass = showHeader ? 'translate-y-0' : '-translate-y-full';
 
   return (
-    <header className={`fixed left-0 right-0 top-0 z-50 transition-transform duration-300 ${translateClass}`}>
+    <header
+      id="main-header"
+      ref={headerRef}
+      className={`fixed left-0 right-0 top-0 z-50 transition-transform duration-300 ${translateClass}`}
+    >
       <div className={`${bgColor} transition-colors duration-300`}>
         <div className={`mx-auto flex max-w-[1200px] items-center justify-between px-4 py-6 ${textColor}`}>
         <a href="/" className="text-sm font-semibold uppercase tracking-[0.35em]">
@@ -60,7 +71,7 @@ export default function Navbar({ variant = 'transparent' }: { variant?: NavbarVa
         <a
           href="/enquire"
           className={`q-button ${
-            variant === 'transparent'
+            variant === 'transparent' && !solidHeader
               ? 'hover:!bg-transparent hover:!text-white hover:!border-white'
               : ''
           } ${solidHeader ? 'text-white' : 'text-white'}`}

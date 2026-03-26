@@ -5,7 +5,7 @@ export default function CTASection() {
         <p className="q-kicker text-black/70">Final Call</p>
         <h2 className="mt-4 text-4xl font-semibold">So, Ready To Start?</h2>
         <div className="mt-8">
-          <a href="#journey" className="q-button">
+          <a href="/enquire" className="q-button">
             Start Your Journey
           </a>
         </div>

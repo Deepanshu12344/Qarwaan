@@ -28,8 +28,8 @@ export default function EnquirePage() {
             </h1>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
-            <div className="rounded-2xl bg-white p-6 shadow-[0_12px_30px_rgba(0,0,0,0.06)] md:p-8">
+          <div className="mt-10">
+            <div className="bg-white p-6 shadow-[0_12px_30px_rgba(0,0,0,0.06)] md:p-8">
               <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-500">Your Trip</p>
               <div className="mt-6 grid grid-cols-1 gap-5">
                 <div>
@@ -103,28 +103,9 @@ export default function EnquirePage() {
                 </div>
               </div>
             </div>
-
-            <aside className="rounded-2xl bg-white p-6 shadow-[0_12px_30px_rgba(0,0,0,0.06)] md:p-8">
-              <div className="text-center">
-                <div className="mx-auto mb-3 h-10 w-10 rounded-full border border-black/10" />
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-500">Office Hours</p>
-                <div className="mt-6 space-y-2 text-sm text-gray-600">
-                  <p>Monday: 9.00am - 11.00pm</p>
-                  <p>Tuesday: 9.00am - 11.00pm</p>
-                  <p>Wednesday: 9.00am - 11.00pm</p>
-                  <p>Thursday: 9.00am - 11.00pm</p>
-                  <p>Friday: 9.00am - 11.00pm</p>
-                  <p>Saturday: Closed</p>
-                  <p>Sunday: Closed</p>
-                </div>
-                <p className="mt-6 text-[0.7rem] uppercase tracking-[0.25em] text-gray-400">
-                  (excluding national holidays)
-                </p>
-              </div>
-            </aside>
           </div>
 
-          <div className="mt-8 rounded-2xl bg-white p-6 shadow-[0_12px_30px_rgba(0,0,0,0.06)] md:p-8">
+          <div className="mt-8 bg-white p-6 shadow-[0_12px_30px_rgba(0,0,0,0.06)] md:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-500">Your Details</p>
             <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
               <div className="md:col-span-2">
