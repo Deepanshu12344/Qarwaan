@@ -1,66 +1,4 @@
-export type ItineraryCard = {
-  day: string;
-  title: string;
-  description: string;
-  image?: string;
-  images?: string[];
-};
-
-export type ItinerarySection = {
-  id: string;
-  label: string;
-  intro: string;
-  daysLabel: string;
-  cards: ItineraryCard[];
-};
-
-export type RestItem = {
-  name: string;
-  description: string;
-  image: string;
-  ctaLabel: string;
-};
-
-export type TripData = {
-  title: string;
-  description: string;
-  image: string;
-  nights?: string;
-  location?: string;
-  featured?: boolean;
-  hero?: {
-    title?: string;
-    subtitle?: string;
-    image?: string;
-  };
-  overview?: string;
-  stats?: {
-    when?: string;
-    price?: string;
-    duration?: string;
-  };
-  itinerary?: ItinerarySection[];
-  midCarousel?: string[];
-  restYourHead?: {
-    title: string;
-    items: RestItem[];
-    ctaLabel: string;
-  };
-  introGallery?: {
-    bigSquare: string;
-    wideRect: string;
-    stackedTop: string;
-    stackedBottom: string;
-  };
-  similarTrips?: string[];
-};
-
-export type TripCard = Pick<TripData, 'title' | 'description' | 'image' | 'location'>;
-
-
-export const trips: TripData[] = [
-
-  
+export const trips = [
   {
     title: 'Japan',
     description: 'Temple towns, alpine hot springs, and modern edge.',
@@ -95,20 +33,20 @@ export const trips: TripData[] = [
             title: 'Amid the Bustle',
             description:
               'Arrive in the capital and settle into a refined stay. Tonight, a private guide introduces the city after dark.',
-        images: [
-          'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',
-          'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80',
-        ],
+            images: [
+              'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',
+              'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80',
+            ],
           },
           {
             day: 'Day 2',
             title: 'Of Shrines and Skyscrapers',
             description:
               'Wander through historic districts, then rise above the skyline. A curated tasting closes the evening.Wander through historic districts, then rise above the skyline. A curated tasting closes the evening.Wander through historic districts, then rise above the skyline. A curated tasting closes the evening.Wander through historic districts, then rise above the skyline. A curated tasting closes the evening.Wander through historic districts, then rise above the skyline. A curated tasting closes the evening.Wander through historic districts, then rise above the skyline. A curated tasting closes the evening.Wander through historic districts, then rise above the skyline. A curated tasting closes the evening.',
-        images: [
-          'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80',
-          'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80',
-        ],
+            images: [
+              'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80',
+              'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80',
+            ],
           },
           {
             day: 'Day 3',
@@ -263,204 +201,191 @@ export const trips: TripData[] = [
     },
   },
   {
-  title: 'Italy',
-  description: 'Renaissance cities, coastal escapes, and timeless cuisine.',
-  image:
-    'https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=900&q=80',
-  nights: '10 Nights',
-  location: 'Italy',
-  featured: true,
-
-  hero: {
-    title: 'A Journey Through Italy',
-    subtitle: 'For art, wine, and sunlit coastlines',
+    title: 'Italy',
+    description: 'Renaissance cities, coastal escapes, and timeless cuisine.',
     image:
-      'https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=2000&q=80',
-  },
-
-  overview:
-    'Italy is a living museum where art, history, and food blend effortlessly. From grand cities to quiet countryside and dramatic coastlines, every moment feels cinematic.',
-
-  stats: {
-    when: 'April to June / September to October',
-    price: '12000',
-    duration: '10 nights ideal length',
-  },
-
-  itinerary: [
-    {
-      id: 'rome',
-      label: 'Rome',
-      intro:
-        'The Eternal City where ancient ruins meet vibrant street life and unforgettable cuisine.',
-      daysLabel: 'Days 1-3',
-      cards: [
-        {
-          day: 'Day 1',
-          title: 'Arrival in Rome',
-          description:
-            'Arrive and settle into your hotel. Spend the evening strolling through piazzas and enjoying your first Italian dinner.',
-          images: [
-            'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80',
-            'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
-          ],
-        },
-        {
-          day: 'Day 2',
-          title: 'Ancient Wonders',
-          description:
-            'Explore the Colosseum, Roman Forum, and Palatine Hill. End your day with a guided food walk through Trastevere.',
-          images: [
-            'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80',
-            'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
-          ],
-        },
-        {
-          day: 'Day 3',
-          title: 'Vatican & Culture',
-          description:
-            'Visit the Vatican Museums, Sistine Chapel, and St. Peter’s Basilica before enjoying a relaxed evening.',
-          image:
-            'https://images.unsplash.com/photo-1508108712903-49b7ef9b1df8?auto=format&fit=crop&w=1200&q=80',
-        },
-      ],
+      'https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=900&q=80',
+    nights: '10 Nights',
+    location: 'Italy',
+    featured: true,
+    hero: {
+      title: 'A Journey Through Italy',
+      subtitle: 'For art, wine, and sunlit coastlines',
+      image:
+        'https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=2000&q=80',
     },
-
-    {
-      id: 'florence',
-      label: 'Florence',
-      intro:
-        'The heart of the Renaissance, filled with art, architecture, and Tuscan charm.',
-      daysLabel: 'Days 4-6',
-      cards: [
-        {
-          day: 'Day 4',
-          title: 'Into Tuscany',
-          description:
-            'Travel to Florence and explore the Duomo, historic streets, and riverside views.',
-          image:
-            'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1200&q=80',
-        },
-        {
-          day: 'Day 5',
-          title: 'Art & Galleries',
-          description:
-            'Visit the Uffizi Gallery and Accademia to witness masterpieces of the Renaissance.',
-          image:
-            'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80',
-        },
-        {
-          day: 'Day 6',
-          title: 'Tuscan Countryside',
-          description:
-            'Enjoy a day trip through vineyards and rolling hills with wine tastings and local cuisine.',
-          image:
-            'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80',
-        },
-      ],
+    overview:
+      'Italy is a living museum where art, history, and food blend effortlessly. From grand cities to quiet countryside and dramatic coastlines, every moment feels cinematic.',
+    stats: {
+      when: 'April to June / September to October',
+      price: '12000',
+      duration: '10 nights ideal length',
     },
-
-    {
-      id: 'venice',
-      label: 'Venice',
-      intro:
-        'A city of canals, romance, and timeless beauty floating on water.',
-      daysLabel: 'Days 7-8',
-      cards: [
-        {
-          day: 'Day 7',
-          title: 'Canals & Gondolas',
-          description:
-            'Arrive in Venice and explore its canals, bridges, and hidden alleys.',
-          image:
-            'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
-        },
-        {
-          day: 'Day 8',
-          title: 'Islands of Venice',
-          description:
-            'Visit Murano and Burano, known for glassmaking and colorful houses.',
-          image:
-            'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
-        },
-      ],
-    },
-
-    {
-      id: 'amalfi',
-      label: 'Amalfi Coast',
-      intro:
-        'Cliffside villages, turquoise waters, and breathtaking coastal drives.',
-      daysLabel: 'Days 9-10',
-      cards: [
-        {
-          day: 'Day 9',
-          title: 'Coastal Escape',
-          description:
-            'Arrive at the Amalfi Coast and relax with stunning sea views and charming villages.',
-          image:
-            'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
-        },
-        {
-          day: 'Day 10',
-          title: 'Positano & Beyond',
-          description:
-            'Explore Positano and enjoy your final Italian sunset before departure.',
-          image:
-            'https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=1200&q=80',
-        },
-      ],
-    },
-  ],
-
-  midCarousel: [
-    'https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=1400&q=80',
-    'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1400&q=80',
-    'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1400&q=80',
-    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80',
-  ],
-
-  restYourHead: {
-    title: 'Where To Rest Your Head',
-    items: [
+    itinerary: [
       {
-        name: 'Hotel Eden, Rome',
-        description:
-          'Luxury stay with panoramic city views and timeless Italian elegance.',
-        image:
-          'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
-        ctaLabel: 'View Hotel',
+        id: 'rome',
+        label: 'Rome',
+        intro:
+          'The Eternal City where ancient ruins meet vibrant street life and unforgettable cuisine.',
+        daysLabel: 'Days 1-3',
+        cards: [
+          {
+            day: 'Day 1',
+            title: 'Arrival in Rome',
+            description:
+              'Arrive and settle into your hotel. Spend the evening strolling through piazzas and enjoying your first Italian dinner.',
+            images: [
+              'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80',
+              'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
+            ],
+          },
+          {
+            day: 'Day 2',
+            title: 'Ancient Wonders',
+            description:
+              'Explore the Colosseum, Roman Forum, and Palatine Hill. End your day with a guided food walk through Trastevere.',
+            images: [
+              'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80',
+              'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
+            ],
+          },
+          {
+            day: 'Day 3',
+            title: 'Vatican & Culture',
+            description:
+              'Visit the Vatican Museums, Sistine Chapel, and St. Peter’s Basilica before enjoying a relaxed evening.',
+            image:
+              'https://images.unsplash.com/photo-1508108712903-49b7ef9b1df8?auto=format&fit=crop&w=1200&q=80',
+          },
+        ],
       },
       {
-        name: 'Belmond Hotel Caruso, Amalfi',
-        description:
-          'Cliffside luxury overlooking the Mediterranean with infinity pool views.',
-        image:
-          'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
-        ctaLabel: 'View Hotel',
+        id: 'florence',
+        label: 'Florence',
+        intro:
+          'The heart of the Renaissance, filled with art, architecture, and Tuscan charm.',
+        daysLabel: 'Days 4-6',
+        cards: [
+          {
+            day: 'Day 4',
+            title: 'Into Tuscany',
+            description:
+              'Travel to Florence and explore the Duomo, historic streets, and riverside views.',
+            image:
+              'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1200&q=80',
+          },
+          {
+            day: 'Day 5',
+            title: 'Art & Galleries',
+            description:
+              'Visit the Uffizi Gallery and Accademia to witness masterpieces of the Renaissance.',
+            image:
+              'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80',
+          },
+          {
+            day: 'Day 6',
+            title: 'Tuscan Countryside',
+            description:
+              'Enjoy a day trip through vineyards and rolling hills with wine tastings and local cuisine.',
+            image:
+              'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80',
+          },
+        ],
       },
       {
-        name: 'Gritti Palace, Venice',
-        description:
-          'Historic canal-side palace offering a truly Venetian experience.',
-        image:
-          'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
-        ctaLabel: 'View Hotel',
+        id: 'venice',
+        label: 'Venice',
+        intro: 'A city of canals, romance, and timeless beauty floating on water.',
+        daysLabel: 'Days 7-8',
+        cards: [
+          {
+            day: 'Day 7',
+            title: 'Canals & Gondolas',
+            description: 'Arrive in Venice and explore its canals, bridges, and hidden alleys.',
+            image:
+              'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
+          },
+          {
+            day: 'Day 8',
+            title: 'Islands of Venice',
+            description:
+              'Visit Murano and Burano, known for glassmaking and colorful houses.',
+            image:
+              'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
+          },
+        ],
+      },
+      {
+        id: 'amalfi',
+        label: 'Amalfi Coast',
+        intro: 'Cliffside villages, turquoise waters, and breathtaking coastal drives.',
+        daysLabel: 'Days 9-10',
+        cards: [
+          {
+            day: 'Day 9',
+            title: 'Coastal Escape',
+            description:
+              'Arrive at the Amalfi Coast and relax with stunning sea views and charming villages.',
+            image:
+              'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+          },
+          {
+            day: 'Day 10',
+            title: 'Positano & Beyond',
+            description:
+              'Explore Positano and enjoy your final Italian sunset before departure.',
+            image:
+              'https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=1200&q=80',
+          },
+        ],
       },
     ],
-    ctaLabel: 'View All',
-  },
-  introGallery: {
-    bigSquare:
+    midCarousel: [
       'https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=1400&q=80',
-    wideRect:
-      'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1800&q=80',
-    stackedTop:
-      'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
-    stackedBottom:
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80',
+    ],
+    restYourHead: {
+      title: 'Where To Rest Your Head',
+      items: [
+        {
+          name: 'Hotel Eden, Rome',
+          description:
+            'Luxury stay with panoramic city views and timeless Italian elegance.',
+          image:
+            'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
+          ctaLabel: 'View Hotel',
+        },
+        {
+          name: 'Belmond Hotel Caruso, Amalfi',
+          description:
+            'Cliffside luxury overlooking the Mediterranean with infinity pool views.',
+          image:
+            'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+          ctaLabel: 'View Hotel',
+        },
+        {
+          name: 'Gritti Palace, Venice',
+          description: 'Historic canal-side palace offering a truly Venetian experience.',
+          image:
+            'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
+          ctaLabel: 'View Hotel',
+        },
+      ],
+      ctaLabel: 'View All',
+    },
+    introGallery: {
+      bigSquare:
+        'https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=1400&q=80',
+      wideRect:
+        'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1800&q=80',
+      stackedTop:
+        'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
+      stackedBottom:
+        'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    },
   },
-},
   {
     title: 'Morocco',
     description: 'Riads, desert light, and aromatic markets.',
@@ -521,7 +446,6 @@ export const trips: TripData[] = [
       price: '8000',
     },
   },
-
   {
     title: 'Rome, Florence & Puglia',
     description: 'A luxury family Italy holiday with artisan stays.',
@@ -565,4 +489,5 @@ export const trips: TripData[] = [
     stats: {
       price: '9000',
     },
-  }];
+  },
+];

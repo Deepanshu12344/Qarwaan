@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import { featuredTrips } from '../data/featuredTrips';
-import type { TripCard } from '../data/trips';
+import type { TripCard } from '../data/tripTypes';
 import { tripSlug } from '../../lib/slug';
 
 type TripsSectionProps = {
@@ -14,7 +13,7 @@ type TripsSectionProps = {
 export default function TripsSection({
   title = 'Explore Our Trips',
   tagline = 'Curated destinations for travelers who want a story worth telling.',
-  trips = featuredTrips,
+  trips = [],
   showViewMore = true,
   viewMoreHref = '/trip-finder',
 }: TripsSectionProps) {
@@ -50,7 +49,7 @@ export default function TripsSection({
                     {trip.description}
                   </p>
                   <Link
-                    to={`/trip-finder/${tripSlug(trip.title, trip.location)}`}
+                    to={`/trip-finder/${trip.slug ?? tripSlug(trip.title, trip.location)}`}
                     className="mt-2 inline-flex border border-white/70 px-4 py-2 text-xs uppercase tracking-[0.25em] text-white transition duration-300 hover:bg-white hover:text-black"
                   >
                     View Package

@@ -63,7 +63,11 @@ export default function Navbar({
         </a>
         <nav className="hidden items-center gap-8 text-[0.7rem] uppercase tracking-[0.25em] md:flex">
           {navItems.map((item) => (
-            <a key={item.label} href={item.href} className={`${mutedText} ${hoverText}`}>
+            <a
+              key={item.label}
+              href={item.href}
+              className={`${mutedText} ${hoverText}`}
+            >
               {item.label}
             </a>
           ))}

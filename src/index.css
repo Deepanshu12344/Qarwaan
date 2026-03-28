@@ -22,6 +22,11 @@ body {
   min-height: 100vh;
   background: var(--q-white);
   overflow-x: hidden;
+  isolation: isolate;
+}
+
+.cursor-plane {
+  cursor: url('/cursor-plane.svg') 12 2, auto;
 }
 
 h1,
@@ -106,4 +111,50 @@ html {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.cursor-trail {
+  pointer-events: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+
+.cursor-trail span {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translate(-100px, -100px);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  line-height: 1;
+  user-select: none;
+  color: #ffffff;
+}
+
+.trip-carousel-track {
+  --carousel-left: 10vw;
+  --carousel-main: 50vw;
+  --carousel-right: 40vw;
+  scroll-padding-left: var(--carousel-left);
+  scroll-padding-right: var(--carousel-right);
+}
+
+.trip-carousel-card {
+  min-width: var(--carousel-main);
+  max-width: var(--carousel-main);
+}
+
+.trip-carousel-spacer {
+  min-width: var(--carousel-right);
+}
+
+@media (max-width: 768px) {
+  .trip-carousel-track {
+    --carousel-left: 6vw;
+    --carousel-main: 78vw;
+    --carousel-right: 16vw;
+  }
 }

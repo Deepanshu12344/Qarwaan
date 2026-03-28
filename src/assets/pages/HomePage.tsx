@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Intro from '../components/Intro';
@@ -13,8 +13,12 @@ import WhyQarwaan from '../components/WhyQarwaan';
 import CTASection from '../components/CTASection';
 import Footer from '../components/Footer';
 import { useSeo } from '../../lib/seo';
+import { useTrips } from '../data/useTrips';
 
 export const HomePage = () => {
+  const { trips } = useTrips();
+  const featuredTrips = useMemo(() => trips.filter((trip) => trip.featured), [trips]);
+
   useEffect(() => {
     const items = Array.from(document.querySelectorAll('.reveal'));
     if (!items.length) {
@@ -55,7 +59,7 @@ export const HomePage = () => {
         <JourneyGrid />
       </div>
       <div className="reveal">
-        <TripsSection />
+        <TripsSection trips={featuredTrips} />
       </div>
       <div className="reveal">
         <MediaLogos />

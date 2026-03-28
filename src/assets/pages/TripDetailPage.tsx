@@ -6,8 +6,8 @@ import TripsSection from '../components/TripsSection';
 import CTASection from '../components/CTASection';
 import { useSeo } from '../../lib/seo';
 import { slugify, tripSlug } from '../../lib/slug';
-import { trips } from '../data/trips';
-import type { TripData, TripCard } from '../data/trips';
+import type { TripData, TripCard } from '../data/tripTypes';
+import { useTrips } from '../data/useTrips';
 
 const buildSimilarTrips = (
   items: TripData[],
@@ -59,16 +59,17 @@ export default function TripDetailPage() {
     visible: boolean;
   }>({ key: null, x: 0, y: 0, dir: 'right', visible: false });
 
+  const { trips, loading, error } = useTrips();
   const trip = useMemo(() => {
     if (!slug) {
       return null;
     }
     return trips.find((item) => tripSlug(item.title, item.location) === slug) ?? null;
-  }, [slug]);
+  }, [slug, trips]);
 
   const similarTrips = useMemo(
     () => buildSimilarTrips(trips, trip?.location ?? trip?.title ?? null),
-    [trip],
+    [trip, trips],
   );
   const itinerary = trip?.itinerary ?? [];
   const midCarousel = trip?.midCarousel ?? [];
@@ -152,7 +153,19 @@ export default function TripDetailPage() {
     };
   }, [isStuck]);
 
-  if (!trip) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#f6f4f1]">
+        <Navbar variant="light" />
+        <main className="px-4 py-24 text-center text-sm uppercase tracking-[0.3em] text-black/60">
+          Loading trip...
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !trip) {
     return (
       <div className="min-h-screen bg-[#f6f4f1]">
         <Navbar variant="light" />
@@ -476,8 +489,7 @@ export default function TripDetailPage() {
               >
                 <div
                   ref={galleryRef}
-                  className="no-scrollbar flex w-full gap-6 overflow-x-hidden px-0 snap-x snap-mandatory"
-                  style={{ scrollPaddingLeft: 0, scrollPaddingRight: 0 }}
+                  className="no-scrollbar trip-carousel-track flex w-full gap-6 overflow-x-hidden px-0 snap-x snap-mandatory"
                   onWheel={(event) => event.preventDefault()}
                   onTouchMove={(event) => event.preventDefault()}
                   onPointerDown={(event) => {
@@ -490,7 +502,7 @@ export default function TripDetailPage() {
                     <div
                       data-card="true"
                       key={image}
-                      className="min-w-[360px] max-w-[360px] flex-shrink-0 snap-start bg-black md:min-w-[680px] md:max-w-[680px]"
+                      className="trip-carousel-card flex-shrink-0 snap-start bg-black"
                     >
                       <div
                         className="h-[360px] w-full bg-cover bg-center md:h-[520px]"
@@ -498,7 +510,7 @@ export default function TripDetailPage() {
                       />
                     </div>
                   ))}
-                  <div className="min-w-[24px] flex-shrink-0" />
+                  <div className="trip-carousel-spacer flex-shrink-0" />
                 </div>
                 <div
                   className={`pointer-events-none absolute left-0 top-0 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black transition-opacity ${

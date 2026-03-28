@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useSeo } from '../../lib/seo';
-import { trips } from '../data/trips';
+import { useTrips } from '../data/useTrips';
 
 const inputBase =
   'w-full rounded-lg border border-black/10 bg-white px-4 py-3 text-sm text-black placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-black/20';
@@ -14,6 +14,7 @@ export default function EnquirePage() {
     const params = new URLSearchParams(location.search);
     return params.get('country')?.trim().toLowerCase() ?? '';
   }, [location.search]);
+  const { trips } = useTrips();
   const posterTrip = useMemo(() => {
     if (!countryParam) {
       return null;
@@ -25,7 +26,7 @@ export default function EnquirePage() {
           (trip.location ?? '').toLowerCase() === countryParam,
       ) ?? null
     );
-  }, [countryParam]);
+  }, [countryParam, trips]);
 
   useSeo({
     title: 'Enquire | Qarwaan',

@@ -4,6 +4,8 @@ import EnquirePage from './assets/pages/EnquirePage';
 import { HomePage } from './assets/pages/HomePage';
 import TripFinderPage from './assets/pages/TripFinderPage';
 import TripDetailPage from './assets/pages/TripDetailPage';
+import PlaneCursor from './assets/components/PlaneCursor';
+import NormalCursor from './assets/components/NormalCursor';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -14,9 +16,11 @@ function ScrollToTop() {
 }
 
 function App() {
+  const cursorMode: 'plane_cursor' | 'normal' = 'normal';
   return (
     <BrowserRouter>
       <ScrollToTop />
+      {cursorMode === 'plane_cursor' ? <PlaneCursor /> : <NormalCursor />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/enquire" element={<EnquirePage />} />

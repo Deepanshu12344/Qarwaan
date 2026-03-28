@@ -5,15 +5,14 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useSeo } from '../../lib/seo';
 import { tripSlug } from '../../lib/slug';
-import { trips } from '../data/trips';
-import type { TripData } from '../data/trips';
-
-const allTrips = trips;
+import type { TripData } from '../data/tripTypes';
+import { useTrips } from '../data/useTrips';
 
 const filterGroups = ['Feeling', 'Destination', 'When', 'Who', 'Duration', 'Experience'];
 const BATCH_SIZE = 9;
 
 function TripFinderCard({ trip }: { trip: TripData }) {
+  const slug = trip.slug ?? tripSlug(trip.title, trip.location);
   return (
     <article className="group relative overflow-hidden bg-black">
       <div
@@ -38,7 +37,7 @@ function TripFinderCard({ trip }: { trip: TripData }) {
             {trip.description}
           </p>
           <Link
-            to={`/trip-finder/${tripSlug(trip.title, trip.location)}`}
+            to={`/trip-finder/${slug}`}
             className="mt-3 inline-flex border border-white/70 px-4 py-2 text-xs uppercase tracking-[0.25em] text-white transition duration-300 hover:bg-white hover:text-black"
           >
             Explore Trip
@@ -55,6 +54,7 @@ export default function TripFinderPage() {
   const [showFilters, setShowFilters] = useState(true);
   const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'duration-asc' | 'duration-desc'>('price-asc');
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const { trips, loading: tripsLoading } = useTrips();
 
   const parseNumber = (value?: string) => {
     if (!value) {
@@ -68,7 +68,7 @@ export default function TripFinderPage() {
   const getPrice = (trip: TripData) => parseNumber(trip.stats?.price);
 
   const sortedTrips = useMemo(() => {
-    const items = [...allTrips];
+    const items = [...trips];
     items.sort((a, b) => {
       if (sortBy === 'duration-asc') {
         return getDuration(a) - getDuration(b);
@@ -82,7 +82,7 @@ export default function TripFinderPage() {
       return getPrice(a) - getPrice(b);
     });
     return items;
-  }, [sortBy]);
+  }, [sortBy, trips]);
 
   const visibleTrips = useMemo(() => sortedTrips.slice(0, visibleCount), [sortedTrips, visibleCount]);
   const hasMore = visibleCount < sortedTrips.length;
@@ -111,7 +111,7 @@ export default function TripFinderPage() {
           isFetching = true;
           setLoading(true);
           timeoutId = window.setTimeout(() => {
-            setVisibleCount((count) => Math.min(count + BATCH_SIZE, allTrips.length));
+            setVisibleCount((count) => Math.min(count + BATCH_SIZE, trips.length));
             setLoading(false);
             isFetching = false;
           }, 650);
@@ -128,11 +128,11 @@ export default function TripFinderPage() {
         window.clearTimeout(timeoutId);
       }
     };
-  }, [hasMore]);
+  }, [hasMore, trips.length]);
 
   useEffect(() => {
     setVisibleCount(BATCH_SIZE);
-  }, [sortBy]);
+  }, [sortBy, trips.length]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -224,7 +224,7 @@ export default function TripFinderPage() {
               </div>
 
               <div ref={sentinelRef} className="py-10 text-center text-sm uppercase tracking-[0.25em] text-black/50">
-                {loading ? 'Loading...' : hasMore ? '' : 'All trips loaded'}
+                {tripsLoading || loading ? 'Loading...' : hasMore ? '' : 'All trips loaded'}
               </div>
             </div>
           </div>
