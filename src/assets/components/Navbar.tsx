@@ -49,6 +49,7 @@ export default function Navbar({
   const hoverText = solidHeader ? 'hover:text-black' : 'hover:text-white';
   const bgColor = solidHeader ? 'bg-white/95 shadow-sm backdrop-blur' : 'bg-transparent';
   const translateClass = showHeader ? 'translate-y-0' : '-translate-y-full';
+  const logoSrc = solidHeader ? '/qarwaan-logo-dark.png' : '/qarwaan-logo-light.png';
 
   return (
     <header
@@ -58,8 +59,13 @@ export default function Navbar({
     >
       <div className={`${bgColor} transition-colors duration-300`}>
         <div className={`mx-auto flex max-w-[1200px] items-center justify-between px-4 py-6 ${textColor}`}>
-        <a href="/" className="text-sm font-semibold uppercase tracking-[0.35em]">
-          QARWAAN
+        <a href="/" aria-label="Qarwaan home" className="inline-flex items-center">
+          <img
+            src={logoSrc}
+            alt="Qarwaan"
+            className="h-8 w-[96px] md:h-10 md:w-[120px]"
+            loading="eager"
+          />
         </a>
         <nav className="hidden items-center gap-8 text-[0.7rem] uppercase tracking-[0.25em] md:flex">
           {navItems.map((item) => (

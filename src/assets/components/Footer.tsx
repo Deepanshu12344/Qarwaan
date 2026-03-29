@@ -25,7 +25,12 @@ export default function Footer() {
       <div className="mx-auto max-w-[1200px] px-4">
         <div className="mb-12 flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
-            <h3 className="text-2xl font-semibold uppercase tracking-[0.35em]">QARWAAN</h3>
+            <img
+              src="/qarwaan-logo-light.png"
+              alt="Qarwaan"
+              className="h-8 w-[96px] md:h-10 md:w-[120px]"
+              loading="eager"
+            />
             <p className="mt-3 text-sm text-white/70">Luxury journeys designed with editorial clarity.</p>
           </div>
           <form className="flex w-full max-w-md flex-col gap-3 sm:flex-row">

@@ -32,9 +32,13 @@ export default function Header({ variant = 'dark' }: HeaderProps) {
           </NavLink>
         </div>
 
-        <div className="absolute left-1/2 flex -translate-x-1/2 flex-col items-center">
-          <p className={`text-[0.6rem] uppercase tracking-[0.4em] ${isLight ? 'text-white/70' : 'text-[#8c7c72]'}`}>Qarwaan</p>
-          <h1 className="text-2xl font-semibold uppercase tracking-[0.4em]">Qarwaan</h1>
+        <div className="absolute left-1/2 flex -translate-x-1/2 items-center">
+          <img
+            src={isLight ? '/qarwaan-logo-light.png' : '/qarwaan-logo-dark.png'}
+            alt="Qarwaan"
+            className="h-8 w-[96px] md:h-10 md:w-[120px]"
+            loading="eager"
+          />
         </div>
 
         <div className="hidden items-center gap-4 text-xs tracking-[0.2em] md:flex">

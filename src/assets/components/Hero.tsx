@@ -33,7 +33,6 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
 
       <div className="relative mx-auto flex min-h-[100vh] max-w-[1200px] flex-col items-center justify-center px-4 text-center text-white">
-        <p className="q-kicker mb-4 text-white/80">QARWAAN</p>
         <h1 className="text-4xl font-semibold tracking-[0.04em] md:text-6xl">
           THE LUXURY TRAVEL EXPERTS
         </h1>
