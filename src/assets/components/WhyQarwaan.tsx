@@ -10,14 +10,14 @@ const features = [
 
 export default function WhyQarwaan() {
   return (
-    <section className="bg-[#f2f2f2] py-20 md:py-[100px]">
+    <section className="bg-[#c95a2a] py-20 md:py-[100px] text-white">
       <div className="mx-auto max-w-[1200px] px-0 text-center">
-        <p className="q-kicker text-gray-500">Why QARWAAN</p>
-        <h2 className="mt-4 text-3xl font-semibold md:text-4xl">Why QARWAAN</h2>
+        <p className="q-kicker text-white/80">Why QARWAAN</p>
+        <h2 className="mt-4 text-3xl font-semibold md:text-4xl text-white">Why QARWAAN</h2>
         <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-5">
           {features.map(({ icon: Icon, label }) => (
-            <div key={label} className="flex flex-col items-center gap-4 text-sm text-gray-700">
-              <Icon className="h-8 w-8 text-black" strokeWidth={1} />
+            <div key={label} className="flex flex-col items-center gap-4 text-sm text-white/85">
+              <Icon className="h-8 w-8 text-white" strokeWidth={1} />
               <p className="uppercase tracking-[0.15em]">{label}</p>
             </div>
           ))}

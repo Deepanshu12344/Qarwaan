@@ -4,12 +4,6 @@ import Hero from '../components/Hero';
 import Intro from '../components/Intro';
 import JourneyGrid from '../components/JourneyGrid';
 import TripsSection from '../components/TripsSection';
-import MediaLogos from '../components/MediaLogos';
-import VideoSection from '../components/VideoSection';
-import WhatWeDo from '../components/WhatWeDo';
-import PursuitSection from '../components/PursuitSection';
-import GuideSection from '../components/GuideSection';
-import WhyQarwaan from '../components/WhyQarwaan';
 import CTASection from '../components/CTASection';
 import Footer from '../components/Footer';
 import { useSeo } from '../../lib/seo';
@@ -53,31 +47,13 @@ export const HomePage = () => {
       <Navbar />
       <Hero />
       <div className="reveal">
-        <Intro />
+        <Intro /> 
       </div>
       <div className="reveal">
         <JourneyGrid />
       </div>
       <div className="reveal">
         <TripsSection trips={featuredTrips} />
-      </div>
-      <div className="reveal">
-        <MediaLogos />
-      </div>
-      <div className="reveal">
-        <VideoSection />
-      </div>
-      <div className="reveal">
-        <WhatWeDo />
-      </div>
-      <div className="reveal">
-        <PursuitSection />
-      </div>
-      <div className="reveal">
-        <GuideSection />
-      </div>
-      <div className="reveal">
-        <WhyQarwaan />
       </div>
       <div className="reveal">
         <CTASection />

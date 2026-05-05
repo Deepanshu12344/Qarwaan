@@ -4,6 +4,15 @@ export type ItineraryCard = {
   description: string;
   image?: string;
   images?: string[];
+  keyAttractions?: string[];
+  hiddenGems?: string[];
+  activities?: string[];
+  localFood?: string[];
+  localExperience?: string[];
+  festivals?: string[];
+  stayType?: string;
+  accessibility?: string;
+  themes?: string[];
 };
 
 export type ItinerarySection = {
@@ -19,6 +28,29 @@ export type RestItem = {
   description: string;
   image: string;
   ctaLabel: string;
+};
+
+export type KeyExperience = {
+  title: string;
+  image?: string;
+};
+
+export type TripFacts = {
+  keyExperienceDetails?: Array<{
+    title: string;
+    description: string;
+    images: string[];
+  }>;
+  packageName?: string;
+  duration?: string;
+  citiesCovered?: string[];
+  startPoint?: string;
+  endPoint?: string;
+  bestSeason?: string;
+  idealFor?: string[];
+  tripType?: string;
+  whyThisTrip?: string[];
+  keyExperiences?: Array<string | KeyExperience>;
 };
 
 export type TripData = {
@@ -40,6 +72,7 @@ export type TripData = {
     price?: string;
     duration?: string;
   };
+  tripFacts?: TripFacts;
   itinerary?: ItinerarySection[];
   midCarousel?: string[];
   restYourHead?: {

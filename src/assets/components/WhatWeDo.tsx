@@ -3,11 +3,11 @@ export default function WhatWeDo() {
     <section id="what-we-do" className="bg-white pt-10 md:pt-[50px]">
       <div className="grid w-full grid-cols-1 items-center gap-10 px-0 md:grid-cols-2">
         <div className="mx-auto w-full max-w-[600px] px-4">
-          <p className="q-kicker text-gray-500">What We Do</p>
-          <h2 className="mt-4 text-3xl font-semibold md:text-4xl">Journeys designed with precision and soul.</h2>
+          <h2 className="mt-4 text-3xl font-semibold md:text-4xl">Journeys designed with intention</h2>
           <p className="mt-4 text-base text-gray-600">
-            We match your pace with the world’s most compelling places, combining artisan hotels, rare access, and
-            elegant logistics. Every trip is shaped around your story, not a template.
+            Every trip we create is built around you — your pace, your preferences, your idea of a perfect escape.
+No rushed schedules. No unnecessary stops. Just meaningful experiences.
+
           </p>
           <div className="mt-8">
             <a href="#guide" className="q-button">

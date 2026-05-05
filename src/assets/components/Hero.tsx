@@ -22,43 +22,37 @@ import { Link } from 'react-router-dom';
 export default function Hero() {
   return (
     <section className="relative min-h-[100vh] w-full overflow-hidden">
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url('/11.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
+      <video
+        className="absolute inset-0 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+      >
+        <source src="/main_hero_vid.MP4" type="video/mp4" />
+      </video>
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
 
       <div className="relative mx-auto flex min-h-[100vh] max-w-[1200px] flex-col items-center justify-center px-4 text-center text-white">
         <h1 className="text-4xl font-semibold tracking-[0.04em] md:text-6xl">
-          THE LUXURY TRAVEL EXPERTS
+          Your Journey Starts Here
         </h1>
-        <p className="mt-6 max-w-2xl text-sm uppercase text-white/80 md:text-base">
-          Tailor-made journeys designed with editorial precision
+        <p className="mt-6 max-w-2xl text-base text-white/80 md:text-xl">
+          Effortless, personal journeys to iconic and hidden places
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="/enquire"
-            className="q-button !bg-black !text-white !border-black hover:!bg-black hover:!text-white hover:!border-black"
-          >
-            Plan Your Trip
-          </a>
           <Link to="/trip-finder" className="q-button q-button-outline-light">
             Explore Our Trips
           </Link>
+          <a
+            href="/enquire"
+            className="q-button !bg-[#004643] !text-white !border-[#004643] hover:!bg-[#004643] hover:!text-white hover:!border-[#004643]"
+          >
+            Upcoming Trips
+          </a>
         </div>
       </div>
 
-      <a
-        href="#intro"
-        className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-xs uppercase tracking-[0.25em] text-white/70"
-      >
-        Scroll
-        <span className="h-8 w-[1px] bg-white/60" />
-      </a>
     </section>
   );
 }

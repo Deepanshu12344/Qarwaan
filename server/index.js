@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import dns from 'node:dns';
 import Trip from './models/Trip.js';
+import MonthPlace from './models/MonthPlace.js';
+import { normalizeTrip } from './lib/tripTransforms.js';
 
 dotenv.config();
 
@@ -25,7 +27,7 @@ app.get('/api/health', (_req, res) => {
 app.get('/api/trips', async (_req, res) => {
   try {
     const trips = await Trip.find().lean();
-    res.json(trips);
+    res.json(trips.map(normalizeTrip));
   } catch (error) {
     res.status(500).json({ message: 'Failed to load trips' });
   }
@@ -38,9 +40,31 @@ app.get('/api/trips/:slug', async (req, res) => {
       res.status(404).json({ message: 'Trip not found' });
       return;
     }
-    res.json(trip);
+    res.json(normalizeTrip(trip));
   } catch (error) {
     res.status(500).json({ message: 'Failed to load trip' });
+  }
+});
+
+app.get('/api/month-places', async (_req, res) => {
+  try {
+    const months = await MonthPlace.find().sort({ order: 1 }).lean();
+    res.json(months);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to load month guides' });
+  }
+});
+
+app.get('/api/month-places/:slug', async (req, res) => {
+  try {
+    const month = await MonthPlace.findOne({ slug: req.params.slug }).lean();
+    if (!month) {
+      res.status(404).json({ message: 'Month guide not found' });
+      return;
+    }
+    res.json(month);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to load month guide' });
   }
 });
 

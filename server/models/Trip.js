@@ -7,6 +7,15 @@ const itineraryCardSchema = new mongoose.Schema(
     description: String,
     image: String,
     images: [String],
+    keyAttractions: [String],
+    hiddenGems: [String],
+    activities: [String],
+    localFood: [String],
+    localExperience: [String],
+    festivals: [String],
+    stayType: String,
+    accessibility: String,
+    themes: [String],
   },
   { _id: false },
 );
@@ -32,6 +41,23 @@ const restItemSchema = new mongoose.Schema(
   { _id: false },
 );
 
+const keyExperienceSchema = new mongoose.Schema(
+  {
+    title: String,
+    image: String,
+  },
+  { _id: false },
+);
+
+const keyExperienceDetailSchema = new mongoose.Schema(
+  {
+    title: String,
+    description: String,
+    images: [String],
+  },
+  { _id: false },
+);
+
 const tripSchema = new mongoose.Schema(
   {
     slug: { type: String, index: true, unique: true },
@@ -51,6 +77,19 @@ const tripSchema = new mongoose.Schema(
       when: String,
       price: String,
       duration: String,
+    },
+    tripFacts: {
+      packageName: String,
+      duration: String,
+      citiesCovered: [String],
+      startPoint: String,
+      endPoint: String,
+      bestSeason: String,
+      idealFor: [String],
+      tripType: String,
+      whyThisTrip: [String],
+      keyExperienceDetails: [keyExperienceDetailSchema],
+      keyExperiences: [keyExperienceSchema],
     },
     itinerary: [itinerarySectionSchema],
     midCarousel: [String],

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const journeyCards = [
   {
@@ -29,7 +30,7 @@ const journeyCards = [
 ];
 
 export default function JourneyGrid() {
-  const tabs = ['By Traveller', 'Most Popular', 'By Month', 'In The Spotlight'];
+  const tabs = ['All Trips', 'Luxury Trips', 'By Month', 'Weekend Getaways'];
   const [activeTab, setActiveTab] = useState(0);
 
   const mostPopular = journeyCards.slice(0, 3);
@@ -67,6 +68,9 @@ export default function JourneyGrid() {
           <h2 className="text-3xl font-semibold uppercase tracking-[0.18em] md:text-4xl">
             START YOUR JOURNEY
           </h2>
+          <p className="mx-auto mt-6 max-w-3xl text-base text-gray-600">
+          Whether you're chasing mountains, culture, or quiet escapes, there’s a journey waiting for you.
+        </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-8 md:gap-10">
             {tabs.map((tab, index) => {
               const isActive = index === activeTab;
@@ -81,7 +85,7 @@ export default function JourneyGrid() {
                 >
                   {tab}
                   <span
-                    className={`absolute left-0 bottom-0 h-[2px] bg-pink-400 transition-all duration-300 ${
+                    className={`absolute left-0 bottom-0 h-[2px] bg-black transition-all duration-300 ${
                       isActive ? 'w-full' : 'w-0 group-hover:w-full'
                     }`}
                   />
@@ -92,43 +96,52 @@ export default function JourneyGrid() {
         </div>
 
         {activeTab === 0 && (
-          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-5">
-            {journeyCards.map((card) => (
-              <article key={card.title} className="group relative h-[340px] overflow-hidden">
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 transition duration-300 group-hover:opacity-100" />
-                <div className="absolute inset-0 flex items-end p-6">
-                  <h3 className="text-lg font-semibold uppercase tracking-[0.2em] text-white opacity-0 transition duration-300 group-hover:opacity-100">
-                    {card.title}
-                  </h3>
-                </div>
-              </article>
-            ))}
+          <div className="mt-12">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-5">
+              {journeyCards.map((card) => (
+                <article key={card.title} className="group relative h-[340px] overflow-hidden">
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-true-black/40 opacity-0 transition duration-300 group-hover:opacity-100" />
+                  <div className="absolute inset-0 flex items-end p-6">
+                    <h3 className="text-lg font-semibold uppercase tracking-[0.2em] text-white opacity-0 transition duration-300 group-hover:opacity-100">
+                      {card.title}
+                    </h3>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div className="mt-10 flex justify-center">
+              <button className="q-button">View More</button>
+            </div>
           </div>
         )}
 
         {activeTab === 2 && (
           <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-6">
             {months.map((month, index) => (
-              <article key={month} className="group relative h-[260px] overflow-hidden">
+              <Link
+                key={month}
+                to={`/places-for/${month.toLowerCase()}`}
+                className="group relative h-[260px] overflow-hidden"
+              >
                 <img
                   src={monthImages[index % monthImages.length]}
                   alt={month}
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute inset-0 bg-true-black/40 opacity-0 transition duration-300 group-hover:opacity-100" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                     {month}
                   </h3>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         )}
@@ -144,7 +157,7 @@ export default function JourneyGrid() {
                     className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 transition duration-300 group-hover:opacity-100" />
+                  <div className="absolute inset-0 bg-true-black/40 opacity-0 transition duration-300 group-hover:opacity-100" />
                   <div className="absolute inset-0 flex items-end p-6">
                     <h3 className="text-lg font-semibold uppercase tracking-[0.2em] text-white opacity-0 transition duration-300 group-hover:opacity-100">
                       {card.title}

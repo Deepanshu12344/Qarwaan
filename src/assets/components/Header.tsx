@@ -2,6 +2,7 @@ import { Phone } from 'lucide-react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
 import { useSitePreferences } from '../../context/useSitePreferences';
+import Logo from './Logo';
 
 type HeaderProps = {
   variant?: 'light' | 'dark';
@@ -20,7 +21,7 @@ export default function Header({ variant = 'dark' }: HeaderProps) {
   return (
     <header className={`absolute left-0 right-0 top-0 z-20 ${textColor}`}>
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 md:px-8">
-        <div className="hidden items-center gap-6 text-xs tracking-[0.3em] md:flex">
+        <div className="hidden items-center gap-6 text-xs font-semibold tracking-[0.3em] md:flex">
           <NavLink to="/trips" className={`uppercase ${mutedTextColor} ${isLight ? 'hover:text-white' : 'hover:text-black'}`}>
             {t('trips')}
           </NavLink>
@@ -33,15 +34,10 @@ export default function Header({ variant = 'dark' }: HeaderProps) {
         </div>
 
         <div className="absolute left-1/2 flex -translate-x-1/2 items-center">
-          <img
-            src={isLight ? '/qarwaan-logo-light.png' : '/qarwaan-logo-dark.png'}
-            alt="Qarwaan"
-            className="h-8 w-[96px] md:h-10 md:w-[120px]"
-            loading="eager"
-          />
+          <Logo tone={isLight ? 'light' : 'teal'} />
         </div>
 
-        <div className="hidden items-center gap-4 text-xs tracking-[0.2em] md:flex">
+        <div className="hidden items-center gap-4 text-xs font-semibold tracking-[0.2em] md:flex">
           {user ? (
             <NavLink to="/account" className={`uppercase ${mutedTextColor} ${isLight ? 'hover:text-white' : 'hover:text-black'}`}>
               {t('account')}

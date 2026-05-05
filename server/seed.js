@@ -4,6 +4,9 @@ import dns from 'node:dns';
 import Trip from './models/Trip.js';
 import { trips } from './data/trips.js';
 import { tripSlug } from './lib/slug.js';
+import MonthPlace from './models/MonthPlace.js';
+import { monthPlaces } from './data/monthPlaces.js';
+import { normalizeTrip } from './lib/tripTransforms.js';
 
 dotenv.config();
 
@@ -27,12 +30,14 @@ const run = async () => {
   await Trip.deleteMany({});
   await Trip.insertMany(
     trips.map((trip) => ({
-      ...trip,
+      ...normalizeTrip(trip),
       slug: tripSlug(trip.title, trip.location),
     })),
   );
+  await MonthPlace.deleteMany({});
+  await MonthPlace.insertMany(monthPlaces);
   await mongoose.disconnect();
-  console.log(`Seeded ${trips.length} trips`);
+  console.log(`Seeded ${trips.length} trips and ${monthPlaces.length} month guides`);
 };
 
 run().catch((error) => {

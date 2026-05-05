@@ -4,6 +4,7 @@ import EnquirePage from './assets/pages/EnquirePage';
 import { HomePage } from './assets/pages/HomePage';
 import TripFinderPage from './assets/pages/TripFinderPage';
 import TripDetailPage from './assets/pages/TripDetailPage';
+import MonthPlacesPage from './assets/pages/MonthPlacesPage';
 import PlaneCursor from './assets/components/PlaneCursor';
 import NormalCursor from './assets/components/NormalCursor';
 
@@ -16,17 +17,25 @@ function ScrollToTop() {
 }
 
 function App() {
-  const cursorMode: 'plane_cursor' | 'normal' = 'normal';
+  const usePlaneCursor = false;
+  useEffect(() => {
+    document.body.dataset.theme = 'light';
+  }, []);
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      {cursorMode === 'plane_cursor' ? <PlaneCursor /> : <NormalCursor />}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/enquire" element={<EnquirePage />} />
-        <Route path="/trip-finder" element={<TripFinderPage />} />
-        <Route path="/trip-finder/:slug" element={<TripDetailPage />} />
-      </Routes>
+      <div className="relative min-h-screen">
+        <ScrollToTop />
+        {usePlaneCursor ? <PlaneCursor /> : <NormalCursor />}
+        <div className="relative z-10">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/enquire" element={<EnquirePage />} />
+            <Route path="/trip-finder" element={<TripFinderPage />} />
+            <Route path="/trip-finder/:slug" element={<TripDetailPage />} />
+            <Route path="/places-for/:month" element={<MonthPlacesPage />} />
+          </Routes>
+        </div>
+      </div>
     </BrowserRouter>
   );
 }
