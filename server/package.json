@@ -1,7 +1,6 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "types":"module",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -14,7 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
