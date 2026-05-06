@@ -7,12 +7,19 @@ import Trip from './models/Trip.js';
 import MonthPlace from './models/MonthPlace.js';
 import { normalizeTrip } from './lib/tripTransforms.js';
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
 
 if (process.env.DNS_SERVERS) {
   const servers = process.env.DNS_SERVERS.split(',').map((s) => s.trim());
   dns.setServers(servers);
 }
+
+console.log("ENV CHECK:", {
+  mongo: process.env.MONGODB_URI ? "FOUND" : "MISSING",
+  port: process.env.PORT,
+});
 
 const app = express();
 const PORT = process.env.PORT || 5000;
