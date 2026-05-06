@@ -5,6 +5,7 @@ import { HomePage } from './assets/pages/HomePage';
 import TripFinderPage from './assets/pages/TripFinderPage';
 import TripDetailPage from './assets/pages/TripDetailPage';
 import MonthPlacesPage from './assets/pages/MonthPlacesPage';
+import PrivacyPolicyPage from './assets/pages/PrivacyPolicyPage';
 import PlaneCursor from './assets/components/PlaneCursor';
 import NormalCursor from './assets/components/NormalCursor';
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/trip-finder" element={<TripFinderPage />} />
             <Route path="/trip-finder/:slug" element={<TripDetailPage />} />
             <Route path="/places-for/:month" element={<MonthPlacesPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           </Routes>
         </div>
       </div>

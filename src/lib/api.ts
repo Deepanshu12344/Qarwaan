@@ -85,6 +85,14 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   }
 }
 
+function unwrapTripsResponse(payload: Trip[] | { trips: Trip[] }) {
+  return Array.isArray(payload) ? payload : payload.trips;
+}
+
+function unwrapTripResponse(payload: Trip | { trip: Trip }) {
+  return 'trip' in payload ? payload.trip : payload;
+}
+
 function getAdminToken() {
   if (typeof window === 'undefined') return '';
   return localStorage.getItem('qarwaan_admin_token') || '';
@@ -128,8 +136,8 @@ export async function getTrips(query: TripsQuery = {}) {
 
     const queryString = params.toString();
     const path = `/trips${queryString ? `?${queryString}` : ''}`;
-    const data = await request<{ trips: Trip[] }>(path);
-    return data.trips;
+    const data = await request<Trip[] | { trips: Trip[] }>(path);
+    return unwrapTripsResponse(data);
   } catch {
     const filtered = FALLBACK_TRIPS.filter((trip) => matchesQuery(trip, query));
     return sortTrips(filtered, query.sort);
@@ -138,8 +146,8 @@ export async function getTrips(query: TripsQuery = {}) {
 
 export async function getTripDetails(slug: string) {
   try {
-    const data = await request<{ trip: Trip }>(`/trips/${slug}`);
-    return data.trip;
+    const data = await request<Trip | { trip: Trip }>(`/trips/${slug}`);
+    return unwrapTripResponse(data);
   } catch {
     const trip = FALLBACK_TRIPS.find((item) => item.slug === slug);
     if (!trip) {

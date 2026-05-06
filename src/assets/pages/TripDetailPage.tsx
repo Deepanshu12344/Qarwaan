@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { ChevronDown, Download, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import TripsSection from '../components/TripsSection';
@@ -8,6 +9,7 @@ import { useSeo } from '../../lib/seo';
 import { slugify, tripSlug } from '../../lib/slug';
 import type { TripData, TripCard } from '../data/tripTypes';
 import { useTrips } from '../data/useTrips';
+import { privacyPolicyContent } from '../data/privacyPolicy';
 
 const buildSimilarTrips = (
   items: TripData[],
@@ -50,8 +52,136 @@ const pickFallbackImage = (images: Array<string | undefined>, fallback: string) 
 const getKeyExperienceTitle = (experience: string | { title: string; image?: string }) =>
   typeof experience === 'string' ? experience : experience.title;
 
+const isFaqContent = (
+  content: unknown,
+): content is { heading: string; items: Array<{ question: string; answer: string }> } =>
+  Boolean(
+    content &&
+      typeof content === 'object' &&
+      'heading' in content &&
+      'items' in content &&
+      Array.isArray((content as { items: unknown }).items),
+  );
+
+const getInfoDropdowns = (tripTitle?: string, tripLocation?: string) => {
+  const tripText = `${tripTitle ?? ''} ${tripLocation ?? ''}`.toLowerCase();
+  const isLadakhTrip = tripText.includes('ladakh') || tripText.includes('leh');
+
+  return [
+    {
+      key: 'cancellation-policy',
+      label: 'Cancellation Policy',
+      content: [
+        'Key Points',
+        'Booking amounts are non-refundable for cancellations.',
+        'Trip date changes have specific conditions (see below).',
+        'Cancellation Charges',
+        '30+ days before: 50% of trip cost',
+        '15-30 days before: 75% of trip cost',
+        '0-15 days before: 100% of trip cost',
+        'Rescheduling',
+        'Within 30 days: No date changes allowed',
+        'Before 30 days: Free for domestic trips',
+        'Force Majeure',
+        'No refunds for weather/government issues - alternate activities may be offered.',
+      ],
+    },
+    {
+      key: 'privacy-policy',
+      label: 'Privacy Policy',
+      content: privacyPolicyContent,
+    },
+    {
+      key: 'faqs',
+      label: 'FAQs',
+      content: isLadakhTrip
+        ? {
+            heading: 'Frequently Asked Questions',
+            items: [
+              {
+                question: 'Do I need time to acclimatize in Ladakh?',
+                answer:
+                  'Yes. Ladakh is a high-altitude destination, so it is best to keep the first day in Leh lighter, drink plenty of water, and avoid overexertion while your body adjusts.',
+              },
+              {
+                question: 'What is the best time to do this Ladakh trip?',
+                answer:
+                  'The most popular travel window is usually from May to September, when road access is better and conditions are generally more comfortable for sightseeing.',
+              },
+              {
+                question: 'Is this trip suitable for families or older travellers?',
+                answer:
+                  'It can be, if the itinerary pace is adjusted and travellers are comfortable with altitude and long mountain drives. Any health concerns should be discussed before booking.',
+              },
+              {
+                question: 'What kind of stays are included on this route?',
+                answer:
+                  'This Ladakh journey typically mixes hotel stays in Leh with camp or scenic stays in Nubra and Pangong, depending on the final plan and availability.',
+              },
+              {
+                question: 'How difficult are the road journeys in Ladakh?',
+                answer:
+                  'Some drives are long and certain stretches can be rough. The scenery is a major part of the experience, but travellers should be prepared for early starts and mountain road conditions.',
+              },
+              {
+                question: 'What should I pack for a Ladakh trip?',
+                answer:
+                  'Pack warm layers, sun protection, sunglasses, comfortable shoes, essential medicines, and any personal items you may need for a remote high-altitude region.',
+              },
+            ],
+          }
+        : {
+            heading: 'Frequently Asked Questions',
+            items: [
+              {
+                question: 'Can this trip be customized?',
+                answer:
+                  'Yes. The itinerary can be adjusted around your travel dates, pace, accommodation preferences, and the kind of experiences you want included.',
+              },
+              {
+                question: 'When should I book?',
+                answer:
+                  'Booking earlier gives you better access to preferred stays, transport options, and overall route planning, especially during peak travel periods.',
+              },
+              {
+                question: 'What is usually included in the trip cost?',
+                answer:
+                  'Inclusions depend on the final trip plan, but commonly cover accommodation, transfers, selected experiences, and planning support from the Qarwaan team.',
+              },
+            ],
+          },
+    },
+  ] as const;
+};
+
+const shortenExperienceDescription = (text: string) => {
+  const normalized = text.trim();
+  if (!normalized) return normalized;
+  const halfLength = Math.max(120, Math.floor(normalized.length / 2));
+  if (normalized.length <= halfLength) return normalized;
+
+  const trimmed = normalized.slice(0, halfLength);
+  const lastSentence = Math.max(trimmed.lastIndexOf('. '), trimmed.lastIndexOf('! '), trimmed.lastIndexOf('? '));
+  if (lastSentence >= 80) {
+    return trimmed.slice(0, lastSentence + 1).trim();
+  }
+
+  const lastSpace = trimmed.lastIndexOf(' ');
+  return `${trimmed.slice(0, lastSpace > 80 ? lastSpace : halfLength).trim()}...`;
+};
+
 export default function TripDetailPage() {
   const { slug } = useParams();
+  const [isDownloadPopupOpen, setIsDownloadPopupOpen] = useState(false);
+  const [downloadForm, setDownloadForm] = useState({
+    email: '',
+    phone: '',
+    wantsCallback: false,
+  });
+  const [downloadState, setDownloadState] = useState<{
+    status: 'idle' | 'submitting' | 'success' | 'error';
+    message: string;
+  }>({ status: 'idle', message: '' });
   const [isStuck, setIsStuck] = useState(false);
   const [hideSticky, setHideSticky] = useState(false);
   const navSentinelRef = useRef<HTMLDivElement | null>(null);
@@ -75,6 +205,8 @@ export default function TripDetailPage() {
   }>({ key: null, x: 0, y: 0, dir: 'right', visible: false });
   const [activeExperienceSlide, setActiveExperienceSlide] = useState(0);
   const [activeDetailTab, setActiveDetailTab] = useState<Record<string, string>>({});
+  const [openInfoDropdown, setOpenInfoDropdown] = useState<string | null>(null);
+  const [openFaqItem, setOpenFaqItem] = useState<string | null>(null);
 
   const { trips, loading, error } = useTrips();
   const trip = useMemo(() => {
@@ -148,13 +280,15 @@ export default function TripDetailPage() {
       ],
     })).filter((experience) => Boolean(experience.title));
   }, [trip, tripFacts]);
+  const tripDuration = trip?.stats?.duration ?? trip?.nights ?? '';
+  const infoDropdowns = getInfoDropdowns(trip?.title, trip?.location);
   const overviewMeta = [
     // { label: 'Package', value: tripFacts?.packageName },
     { label: 'Start Point', value: tripFacts?.startPoint },
     { label: 'Cities Covered', value: tripFacts?.citiesCovered?.join(', ') },
     { label: 'End Point', value: tripFacts?.endPoint },
     { label: 'Best Season', value: tripFacts?.bestSeason },
-    { label: 'How Long', value: trip?.stats?.duration ?? trip?.nights ?? ''}
+    { label: 'How Long', value: tripDuration }
     // { label: 'Ideal For', value: tripFacts?.idealFor?.join(', ') },
     // { label: 'Trip Type', value: tripFacts?.tripType },
   ].filter((item) => item.value);
@@ -236,6 +370,28 @@ export default function TripDetailPage() {
     };
   }, [isStuck]);
 
+  useEffect(() => {
+    if (!isDownloadPopupOpen) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsDownloadPopupOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isDownloadPopupOpen]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#f6f4f1]">
@@ -274,6 +430,55 @@ export default function TripDetailPage() {
       </div>
     );
   }
+
+  const openDownloadPopup = () => {
+    setDownloadState({ status: 'idle', message: '' });
+    setIsDownloadPopupOpen(true);
+  };
+
+  const closeDownloadPopup = () => {
+    setIsDownloadPopupOpen(false);
+  };
+
+  const handleDownloadSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setDownloadState({ status: 'submitting', message: '' });
+
+    try {
+      const response = await fetch('https://formspree.io/f/mkopnqaw', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: `Itinerary download request: ${trip.title}`,
+          trip_name: trip.title,
+          destination: trip.location ?? trip.title,
+          duration: tripDuration,
+          email: downloadForm.email,
+          phone: downloadForm.phone,
+          callback_requested: downloadForm.wantsCallback ? 'Yes' : 'No',
+          request_type: 'itinerary_download',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
+
+      setDownloadState({
+        status: 'success',
+        message: 'Your request has been received. Our team will share the itinerary with you shortly.',
+      });
+      setDownloadForm({ email: '', phone: '', wantsCallback: false });
+    } catch {
+      setDownloadState({
+        status: 'error',
+        message: 'Unable to send your request right now. Please try again in a moment.',
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#f6f4f1]">
@@ -384,10 +589,7 @@ export default function TripDetailPage() {
                       const safeIndex = ((activeExperienceSlide % totalExperiences) + totalExperiences) % totalExperiences;
                       const experience = keyExperienceSlides[safeIndex];
                       const index = safeIndex;
-                      const images = experience.images?.length ? experience.images : [trip.image];
-                      const experienceKey = `experience-${index}`;
-                      const current = itinerarySlide[experienceKey] ?? 0;
-                      const currentImage = images[current] ?? images[0];
+                      const image = experience.images?.[0] ?? trip.image;
 
                       return (
                         <div className="space-y-6">
@@ -399,64 +601,11 @@ export default function TripDetailPage() {
                             className="grid gap-0 border border-black/10 bg-white md:grid-cols-[1.45fr_0.55fr]"
                           >
                             <div>
-                              <div
-                                className="relative overflow-hidden bg-black/5"
-                                style={{ cursor: images.length > 1 ? 'none' : 'default' }}
-                                onPointerMove={(event) => {
-                                  if (event.pointerType === 'touch' || images.length < 2) {
-                                    return;
-                                  }
-                                  const rect = event.currentTarget.getBoundingClientRect();
-                                  const x = event.clientX - rect.left;
-                                  const y = event.clientY - rect.top;
-                                  const dir = x < rect.width / 2 ? 'left' : 'right';
-                                  setItineraryCursor({ key: experienceKey, x, y, dir, visible: true });
-                                }}
-                                onPointerLeave={() => {
-                                  setItineraryCursor((prev) => ({ ...prev, visible: false }));
-                                }}
-                                onClick={(event) => {
-                                  if (images.length < 2) {
-                                    return;
-                                  }
-                                  const rect = event.currentTarget.getBoundingClientRect();
-                                  const dir = event.clientX - rect.left < rect.width / 2 ? -1 : 1;
-                                  setItinerarySlide((prev) => {
-                                    const next = (prev[experienceKey] ?? 0) + dir;
-                                    return { ...prev, [experienceKey]: (next + images.length) % images.length };
-                                  });
-                                }}
-                              >
+                              <div className="relative overflow-hidden bg-black/5">
                                 <div
                                   className="h-[290px] w-full bg-cover bg-center transition duration-700 md:h-[500px]"
-                                  style={{ backgroundImage: `url(${currentImage})` }}
+                                  style={{ backgroundImage: `url(${image})` }}
                                 />
-                                {images.length > 1 ? (
-                                  <>
-                                    <div
-                                      className={`pointer-events-none absolute left-0 top-0 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center bg-white text-black transition-opacity ${
-                                        itineraryCursor.visible && itineraryCursor.key === experienceKey
-                                          ? 'opacity-100'
-                                          : 'opacity-0'
-                                      }`}
-                                      style={{
-                                        transform: `translate(${itineraryCursor.x}px, ${itineraryCursor.y}px)`,
-                                      }}
-                                    >
-                                      {itineraryCursor.dir === 'left' ? '<' : '>'}
-                                    </div>
-                                    <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-                                      {images.map((_, imageIndex) => (
-                                        <span
-                                          key={`${experienceKey}-dot-${imageIndex}`}
-                                          className={`h-2 w-2 rounded-full border border-white/70 ${
-                                            imageIndex === current ? 'bg-white' : 'bg-white/20'
-                                          }`}
-                                        />
-                                      ))}
-                                    </div>
-                                  </>
-                                ) : null}
                               </div>
                             </div>
                             <div className="flex flex-col justify-between bg-[#f6f4f1] px-6 py-7 md:px-8 md:py-10">
@@ -466,49 +615,20 @@ export default function TripDetailPage() {
                                 </p>
                                 <div className="mt-5 h-px w-16 bg-[#004643]/20" />
                                 <p className="mt-5 text-sm leading-8 text-black/72 md:text-[0.96rem]">
-                                  {experience.description}
+                                  {shortenExperienceDescription(experience.description)}
                                 </p>
                               </div>
                               <div className="mt-8 space-y-5">
-                                {images.length > 1 ? (
-                                  <div className="flex items-center gap-3 text-[0.68rem] uppercase tracking-[0.24em] text-black/50">
-                                    <button
-                                      type="button"
-                                      className="inline-flex h-10 w-10 items-center justify-center border border-black/10 bg-white transition hover:border-black/25"
-                                      onClick={() =>
-                                        setItinerarySlide((prev) => {
-                                          const next = (prev[experienceKey] ?? 0) - 1;
-                                          return { ...prev, [experienceKey]: (next + images.length) % images.length };
-                                        })
-                                      }
-                                    >
-                                      &#8592;
-                                    </button>
-                                    <span>Browse photos</span>
-                                    <button
-                                      type="button"
-                                      className="inline-flex h-10 w-10 items-center justify-center border border-black/10 bg-white transition hover:border-black/25"
-                                      onClick={() =>
-                                        setItinerarySlide((prev) => {
-                                          const next = (prev[experienceKey] ?? 0) + 1;
-                                          return { ...prev, [experienceKey]: next % images.length };
-                                        })
-                                      }
-                                    >
-                                      &#8594;
-                                    </button>
-                                  </div>
-                                ) : null}
                                 <div className="flex items-center justify-between gap-4 border-t border-black/10 pt-5">
                                   <button
                                     type="button"
-                                    className="inline-flex items-center gap-3 border border-black/10 bg-white px-4 py-3 text-[0.68rem] uppercase tracking-[0.24em] text-black/60 transition hover:border-black/25 hover:text-black"
+                                    className="inline-flex h-10 w-10 items-center justify-center border border-black/10 bg-white text-black/60 transition hover:border-black/25 hover:text-black"
                                     onClick={() =>
                                       setActiveExperienceSlide((prev) => (prev - 1 + totalExperiences) % totalExperiences)
                                     }
+                                    aria-label="Previous experience"
                                   >
                                     <span className="text-base leading-none">&#8592;</span>
-                                    Prev
                                   </button>
                                   <div className="flex items-center gap-2">
                                     {keyExperienceSlides.map((_, dotIndex) => (
@@ -525,10 +645,10 @@ export default function TripDetailPage() {
                                   </div>
                                   <button
                                     type="button"
-                                    className="inline-flex items-center gap-3 border border-black/10 bg-white px-4 py-3 text-[0.68rem] uppercase tracking-[0.24em] text-black/60 transition hover:border-black/25 hover:text-black"
+                                    className="inline-flex h-10 w-10 items-center justify-center border border-black/10 bg-white text-black/60 transition hover:border-black/25 hover:text-black"
                                     onClick={() => setActiveExperienceSlide((prev) => (prev + 1) % totalExperiences)}
+                                    aria-label="Next experience"
                                   >
-                                    Next
                                     <span className="text-base leading-none">&#8594;</span>
                                   </button>
                                 </div>
@@ -566,7 +686,7 @@ export default function TripDetailPage() {
           </div>
         </section> */}
         <section id="itinerary" className="bg-white">
-          <div className="mx-auto max-w-[1200px] px-4 pt-4 pb-16">
+          <div className="mx-auto max-w-[1200px] px-1 pt-4 pb-16 md:px-2">
             {introGallery ? (
               <div className="relative left-1/2 right-1/2 mb-10 w-screen -translate-x-1/2 px-4 md:px-6">
                 <div className="grid gap-4 md:grid-cols-[1.2fr_1.8fr_1fr]">
@@ -598,11 +718,11 @@ export default function TripDetailPage() {
                 const totalLabels = itinerary.length;
                 const insertAfterIndex = Math.max(0, Math.floor(totalLabels / 2) - 1);
                 const renderCta = () => (
-                  <div className="pl-10 pb-10">
+                  <div className="pl-5 pb-10 md:pl-6">
                     <section className="bg-[#c95a2a] py-12 text-white">
-                      <div className="flex flex-col gap-6 px-6 md:flex-row md:items-center md:justify-between">
+                      <div className="flex flex-col gap-6 px-3 md:flex-row md:items-center md:justify-between md:px-5">
                         <div className="max-w-3xl">
-                          <h2 className="text-3xl font-semibold uppercase tracking-[0.18em] text-white">
+                          <h2 className="text-3xl font-semibold uppercase tracking-[0.04em] text-white">
                             {itineraryCta.title}
                           </h2>
                           <p className="mt-4 text-sm text-white/90">{itineraryCta.body}</p>
@@ -623,7 +743,7 @@ export default function TripDetailPage() {
                         <div key={sectionKey}>
                           <div
                             id={`itinerary-${slugify(section.label)}-${sectionIndex + 1}`}
-                            className="relative pl-10 scroll-mt-28"
+                            className="relative pl-5 scroll-mt-28 md:pl-6"
                           >
                         <div className="absolute left-3 top-1.5 -translate-x-1/2 text-black">
                           <svg
@@ -647,9 +767,6 @@ export default function TripDetailPage() {
                             {section.label}
                           </h3>
                           <p className="mt-3 max-w-3xl text-sm text-black/70">{section.intro}</p>
-                          <p className="mt-6 text-xs uppercase tracking-[0.3em] text-black/60">
-                            {section.daysLabel}
-                          </p>
                         </div>
 
                         <div className="space-y-6 pb-10">
@@ -739,20 +856,22 @@ export default function TripDetailPage() {
                                       );
                                     })()}
                                   </div>
-                                  <div className="flex flex-1 flex-col justify-center p-7 md:p-10">
-                                    <p className="text-xs uppercase tracking-[0.3em] text-black/60">
-                                      {card.day}
-                                    </p>
-                                    <h4 className="mt-2 text-xl font-semibold uppercase tracking-[0.12em] text-black">
-                                      {card.title}
-                                    </h4>
+                                  <div className="flex flex-1 flex-col justify-center px-3 py-7 md:px-5 md:py-10">
+                                    <div className="flex items-start justify-between gap-4">
+                                      <h4 className="text-xl font-semibold uppercase tracking-[0.12em] text-black">
+                                        {card.title}
+                                      </h4>
+                                      <p className="flex-shrink-0 text-base font-semibold uppercase tracking-[0.18em] text-[#004643]">
+                                        {card.day}
+                                      </p>
+                                    </div>
                                     <p className="mt-4 text-sm leading-7 text-black/72">{card.description}</p>
                                     {card.themes?.length ? (
                                       <div className="mt-5 flex flex-wrap gap-2">
                                         {card.themes.map((theme) => (
                                           <span
                                             key={theme}
-                                            className="border border-[#004643] bg-[#f6f4f1] px-3 py-1 text-[0.65rem] uppercase tracking-[0.22em] text-black/65"
+                                            className="border border-[#004643] bg-[#004643] px-4 py-1.5 text-[0.72rem] uppercase tracking-[0.18em] text-white"
                                           >
                                             {theme}
                                           </span>
@@ -771,7 +890,7 @@ export default function TripDetailPage() {
                                           return selectedSection ? (
                                             <>
                                               <div className="overflow-x-auto no-scrollbar">
-                                                <div className="flex min-w-max gap-6 text-[0.68rem] uppercase tracking-[0.28em] text-black/55">
+                                                <div className="flex min-w-max gap-7 text-[0.76rem] font-semibold uppercase tracking-[0.14em] text-black/55">
                                                   {availableTabs.map((tab) => (
                                                     <button
                                                       key={tab.key}
@@ -797,7 +916,7 @@ export default function TripDetailPage() {
                                                 <ul className="space-y-2 text-sm leading-6 text-black/72">
                                                   {card[selectedSection.key]?.map((item) => (
                                                     <li key={item} className="flex gap-2">
-                                                      <span className="mt-[0.45rem] h-1.5 w-1.5 flex-shrink-0 bg-black/45" />
+                                                      <span className="mt-[0.45rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-black/45" />
                                                       <span>{item}</span>
                                                     </li>
                                                   ))}
@@ -813,7 +932,7 @@ export default function TripDetailPage() {
                                         <div className="grid gap-4 sm:grid-cols-2">
                                         {card.stayType ? (
                                           <div className="bg-transparent p-4">
-                                            <p className="text-[0.65rem] uppercase tracking-[0.3em] text-black/45">
+                                            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-black/55">
                                               Stay Type
                                             </p>
                                             <p className="mt-2 text-sm text-black/70">{card.stayType}</p>
@@ -821,7 +940,7 @@ export default function TripDetailPage() {
                                         ) : null}
                                         {card.accessibility ? (
                                           <div className="bg-transparent p-4">
-                                            <p className="text-[0.65rem] uppercase tracking-[0.3em] text-black/45">
+                                            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-black/55">
                                               Accessibility
                                             </p>
                                             <p className="mt-2 text-sm text-black/70">{card.accessibility}</p>
@@ -954,6 +1073,106 @@ export default function TripDetailPage() {
               <div className="mt-10 flex justify-center">
                 <button className="q-button !bg-black !text-white !border-black">{restYourHead.ctaLabel}</button>
               </div>
+
+              <div className="mt-14 border-t border-black/10 pt-8">
+                <div className="space-y-4">
+                  {infoDropdowns.map((item) => {
+                    const isOpen = openInfoDropdown === item.key;
+
+                    return (
+                      <div key={item.key} className="border border-black/10 bg-[#f8f6f2]">
+                        <button
+                          type="button"
+                          onClick={() => setOpenInfoDropdown((prev) => (prev === item.key ? null : item.key))}
+                          className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                        >
+                          <span className="text-[0.82rem] font-semibold uppercase tracking-[0.22em] text-black">
+                            {item.label}
+                          </span>
+                          <ChevronDown
+                            className={`h-4 w-4 flex-shrink-0 text-black transition-transform duration-200 ${
+                              isOpen ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </button>
+                        {isOpen ? (
+                          <div className="border-t border-black/10 px-5 py-4">
+                            {Array.isArray(item.content) ? (
+                              <div className="space-y-2.5 text-sm leading-7 text-black/70">
+                                {item.content.map((line) => {
+                                  const isHeading =
+                                    line === 'Key Points' ||
+                                    line === 'Cancellation Charges' ||
+                                    line === 'Rescheduling' ||
+                                    line === 'Force Majeure' ||
+                                    line === 'Overview' ||
+                                    line === 'Data Collection' ||
+                                    line === 'Data Usage' ||
+                                    line === 'Data Sharing' ||
+                                    line === 'Your Rights' ||
+                                    line === 'Security' ||
+                                    line === 'Contact & Full Policy';
+
+                                  return isHeading ? (
+                                    <p
+                                      key={line}
+                                      className="pt-1 text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-black"
+                                    >
+                                      {line}
+                                    </p>
+                                  ) : (
+                                    <p key={line}>{line}</p>
+                                  );
+                                })}
+                              </div>
+                            ) : isFaqContent(item.content) ? (
+                              <div>
+                                <p className="text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-black">
+                                  {item.content.heading}
+                                </p>
+                                <div className="mt-4 space-y-3">
+                                  {item.content.items.map((faq, index) => {
+                                    const faqKey = `${item.key}-${index}`;
+                                    const isFaqOpen = openFaqItem === faqKey;
+
+                                    return (
+                                      <div key={faqKey} className="border border-black/10 bg-white">
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            setOpenFaqItem((prev) => (prev === faqKey ? null : faqKey))
+                                          }
+                                          className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left"
+                                        >
+                                          <span className="text-sm font-medium leading-6 text-black">
+                                            {faq.question}
+                                          </span>
+                                          <ChevronDown
+                                            className={`h-4 w-4 flex-shrink-0 text-black transition-transform duration-200 ${
+                                              isFaqOpen ? 'rotate-180' : ''
+                                            }`}
+                                          />
+                                        </button>
+                                        {isFaqOpen ? (
+                                          <div className="border-t border-black/10 px-4 py-3">
+                                            <p className="text-sm leading-7 text-black/70">{faq.answer}</p>
+                                          </div>
+                                        ) : null}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-sm leading-7 text-black/70">{item.content}</p>
+                            )}
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </section>
         ) : null}
@@ -970,6 +1189,136 @@ export default function TripDetailPage() {
 
         <CTASection />
       </main>
+      {isDownloadPopupOpen ? (
+        <div
+          className="fixed inset-0 z-[120] flex items-center justify-center bg-[#201915]/35 px-4 py-8 backdrop-blur-[6px]"
+          onClick={closeDownloadPopup}
+        >
+          <div
+            className="relative w-full max-w-[388px] overflow-hidden border border-[#d7dce5] bg-[#fbfbf9] shadow-[0_24px_80px_rgba(0,0,0,0.22)]"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="relative px-8 pb-7 pt-7">
+              <button
+                type="button"
+                aria-label="Close popup"
+                onClick={closeDownloadPopup}
+                className="absolute right-8 top-8 inline-flex h-8 w-8 items-center justify-center border-2 border-[#394559] bg-white text-[#95a1b2] transition hover:text-[#394559]"
+              >
+                <X size={18} strokeWidth={2.2} />
+              </button>
+
+              <h2 className="pr-12 text-[1.6rem] font-semibold leading-none tracking-[-0.03em] text-[#1f2a3d]">
+                Download Itinerary
+              </h2>
+              <p className="mt-1.5 max-w-[250px] text-[0.9rem] leading-6 text-[#5a677d]">
+                Provide your details to get the complete travel plan
+              </p>
+
+              <div className="mt-5 flex items-center gap-3 border border-[#d9dfe8] bg-[#f8fafc] p-3.5">
+                <img
+                  src={trip.image}
+                  alt={trip.title}
+                  className="h-[52px] w-[52px] object-cover"
+                />
+                <div className="min-w-0">
+                  <p className="truncate text-[0.95rem] font-semibold leading-6 text-[#1f2a3d]">
+                    {trip.title}
+                  </p>
+                  <p className="text-[0.9rem] text-[#5a677d]">{tripDuration}</p>
+                </div>
+              </div>
+
+              <form className="mt-3.5" onSubmit={handleDownloadSubmit}>
+                <div>
+                  <label htmlFor="download-email" className="text-[0.9rem] font-medium text-[#394559]">
+                    Email Address *
+                  </label>
+                  <input
+                    id="download-email"
+                    type="email"
+                    required
+                    value={downloadForm.email}
+                    onChange={(event) =>
+                      setDownloadForm((prev) => ({ ...prev, email: event.target.value }))
+                    }
+                    placeholder="Enter your email address"
+                    className="mt-1.5 h-10.5 w-full border border-[#3a4350] bg-white px-4 text-[0.94rem] text-[#1f2a3d] outline-none transition placeholder:text-[#8a93a3] focus:border-[#004643] focus:ring-2 focus:ring-[#004643]/15"
+                  />
+                </div>
+
+                <div className="mt-3">
+                  <label htmlFor="download-phone" className="text-[0.9rem] font-medium text-[#394559]">
+                    Phone Number *
+                  </label>
+                  <input
+                    id="download-phone"
+                    type="tel"
+                    required
+                    value={downloadForm.phone}
+                    onChange={(event) =>
+                      setDownloadForm((prev) => ({ ...prev, phone: event.target.value }))
+                    }
+                    placeholder="Enter your phone number"
+                    className="mt-1.5 h-10.5 w-full border border-[#3a4350] bg-white px-4 text-[0.94rem] text-[#1f2a3d] outline-none transition placeholder:text-[#8a93a3] focus:border-[#004643] focus:ring-2 focus:ring-[#004643]/15"
+                  />
+                </div>
+
+                <label className="mt-3 flex items-center gap-3 text-[0.88rem] text-[#5a677d]">
+                  <input
+                    type="checkbox"
+                    checked={downloadForm.wantsCallback}
+                    onChange={(event) =>
+                      setDownloadForm((prev) => ({ ...prev, wantsCallback: event.target.checked }))
+                    }
+                    className="h-[21px] w-[21px] border border-[#98a2b3] accent-[#004643]"
+                  />
+                  <span>Would you like us to call you back?</span>
+                </label>
+
+                <p className="mt-2.5 text-[0.82rem] leading-5 text-[#6b768b]">
+                  By downloading this itinerary, I confirm that I have read and understood the{' '}
+                  <Link
+                    to="/privacy-policy"
+                    className="font-medium text-[#004643] underline underline-offset-2"
+                  >
+                    Privacy Policy.
+                  </Link>
+                </p>
+
+                {downloadState.message ? (
+                  <p
+                    className={`mt-2.5 text-[0.84rem] ${
+                      downloadState.status === 'error' ? 'text-[#b54708]' : 'text-[#004643]'
+                    }`}
+                  >
+                    {downloadState.message}
+                  </p>
+                ) : null}
+
+                <button
+                  type="submit"
+                  disabled={downloadState.status === 'submitting'}
+                  className="mt-4 inline-flex h-[50px] w-full items-center justify-center gap-3 bg-[#004643] px-6 text-[0.94rem] font-semibold text-white shadow-[0_14px_30px_rgba(0,70,67,0.24)] transition hover:bg-[#003a38] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  <span>
+                    {downloadState.status === 'submitting' ? 'Submitting...' : 'Download Itinerary'}
+                  </span>
+                  <Download size={18} strokeWidth={2.1} />
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      ) : null}
+      <button
+        type="button"
+        onClick={openDownloadPopup}
+        className="fixed right-0 top-1/2 z-[90] hidden -translate-y-1/2 rounded-l-[14px] bg-[#004643] px-3 py-5 text-[0.82rem] font-semibold tracking-normal text-white shadow-[0_10px_30px_rgba(0,70,67,0.28)] transition hover:bg-[#003a38] md:block"
+        style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
+      >
+        Download itinerary
+      </button>
       <Footer />
     </div>
   );

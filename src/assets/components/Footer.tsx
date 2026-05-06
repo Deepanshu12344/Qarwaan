@@ -5,12 +5,12 @@ import { useTrips } from '../data/useTrips';
 import Logo from './Logo';
 
 const usefulInformation = [
-  'Frequently Asked Questions',
-  'Online Enquiry',
-  'Privacy Policy',
-  'Cancellation Policy',
-  'Travel Insurance',
-];
+  { label: 'Frequently Asked Questions' },
+  { label: 'Online Enquiry', href: '/enquire' },
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+  { label: 'Cancellation Policy' },
+  { label: 'Travel Insurance' },
+] as const;
 
 type FooterTrip = {
   slug?: string;
@@ -112,7 +112,15 @@ export default function Footer() {
           <h4 className="text-xs uppercase tracking-[0.3em] text-white/60">Useful Information</h4>
           <ul className="mt-4 space-y-2 text-sm text-white/70">
             {usefulInformation.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item.label}>
+                {'href' in item ? (
+                  <Link to={item.href} className="transition hover:text-white">
+                    {item.label}
+                  </Link>
+                ) : (
+                  item.label
+                )}
+              </li>
             ))}
           </ul>
         </div>
