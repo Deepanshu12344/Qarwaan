@@ -493,16 +493,14 @@ export const trips = [
   {
     title: 'Ladakh',
     description: 'High passes, monastery trails, and the raw stillness of Ladakh.',
-    image:
-      'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80',
+    image: '/trip_images/ladakhhero.png',
     nights: '6 Nights',
     location: 'Ladakh',
     featured: true,
     hero: {
       title: 'The Ultimate Ladakh Road Journey',
       subtitle: 'For high-altitude roads, desert valleys, and Pangong blue',
-      image:
-        'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=2000&q=80',
+      image: '/trip_images/ladakhhero.png',
     },
     overview:
       'This Ladakh journey takes you through some of the most breathtaking landscapes in India, covering Leh, Nubra Valley, and Pangong Lake. Starting from Leh, you acclimatize to the altitude while exploring local markets and monasteries. The journey continues through Khardung La, one of the highest motorable roads, leading to Nubra Valley’s cold desert and unique sand dunes. Experience the beauty of Pangong Lake, known for its changing colors and peaceful surroundings. Along the way, visit ancient monasteries, interact with locals, and enjoy scenic drives through valleys and rivers. This trip is ideal for travelers looking for adventure, nature, and cultural richness in one unforgettable journey.',

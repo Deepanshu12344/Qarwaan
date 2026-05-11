@@ -170,7 +170,7 @@ export default function EnquirePage() {
       <Navbar variant="light" />
       <div className="pt-24">
         <div className="bg-black py-2 text-center text-[0.6rem] uppercase tracking-[0.35em] text-white/80">
-          Starting from x rupees  
+          Travel made Simple
         </div>
 
         <section className="mx-auto max-w-[1200px] px-4 pb-20 pt-12">

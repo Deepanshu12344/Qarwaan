@@ -215,6 +215,10 @@ export default function TripDetailPage() {
     }
     return trips.find((item) => tripSlug(item.title, item.location) === slug) ?? null;
   }, [slug, trips]);
+  const isLadakhTrip = useMemo(() => {
+    const tripText = `${trip?.title ?? ''} ${trip?.location ?? ''}`.toLowerCase();
+    return tripText.includes('ladakh') || tripText.includes('leh');
+  }, [trip?.title, trip?.location]);
 
   const similarTrips = useMemo(
     () => buildSimilarTrips(trips, trip?.location ?? trip?.title ?? null),
@@ -484,14 +488,19 @@ export default function TripDetailPage() {
     <div className="min-h-screen bg-[#f6f4f1]">
       <Navbar heroOffset={navThreshold} />
       <main>
-        <section ref={heroRef} className="relative min-h-[85vh] w-full overflow-hidden">
+        <section ref={heroRef} className="relative min-h-screen w-full overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${trip.image})`, backgroundAttachment: 'fixed' }}
+            style={{
+              backgroundImage: `url(${trip.image})`,
+              backgroundAttachment: 'fixed',
+              backgroundPosition: isLadakhTrip ? 'center 30%' : 'center',
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/55" />
 
-          <div className="relative mx-auto flex min-h-[85vh] max-w-[1200px] flex-col justify-center px-4 pt-24 text-white">
+          {!isLadakhTrip ? (
+            <div className="relative mx-auto flex min-h-screen max-w-[1200px] flex-col justify-center px-4 pt-24 text-white">
             <div className="flex items-center gap-2 text-[0.72rem] uppercase tracking-[0.3em] text-white/70">
               <svg
                 aria-hidden="true"
@@ -516,7 +525,8 @@ export default function TripDetailPage() {
             <p className="mt-6 max-w-2xl text-sm text-white/85 md:text-base">
               {trip.description}
             </p>
-          </div>
+            </div>
+          ) : null}
         </section>
 
         <div ref={navSentinelRef} />

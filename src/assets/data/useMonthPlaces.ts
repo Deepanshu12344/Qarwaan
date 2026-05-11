@@ -7,8 +7,10 @@ export type MonthPlacesState = {
   error: string | null;
 };
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
+
 export const fetchMonthPlaces = async () => {
-  const response = await fetch('/api/month-places');
+  const response = await fetch(`${API_BASE_URL}/month-places`);
   if (!response.ok) {
     throw new Error('Failed to load month guides');
   }
@@ -16,7 +18,7 @@ export const fetchMonthPlaces = async () => {
 };
 
 export const fetchMonthPlace = async (slug: string) => {
-  const response = await fetch(`/api/month-places/${slug}`);
+  const response = await fetch(`${API_BASE_URL}/month-places/${slug}`);
   if (!response.ok) {
     if (response.status === 404) {
       return null;

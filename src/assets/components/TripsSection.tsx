@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import type { TripCard } from '../data/tripTypes';
 import { tripSlug } from '../../lib/slug';
@@ -11,18 +12,45 @@ type TripsSectionProps = {
 };
 
 export default function TripsSection({
-  title = 'Explore Our Trips',
   tagline = 'Curated destinations designed for unforgettable experiences.',
   trips = [],
   showViewMore = true,
   viewMoreHref = '/trip-finder',
 }: TripsSectionProps) {
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const heading = 'Explore Our Trips';
+
+  const scrollCards = (direction: 'left' | 'right') => {
+    const node = scrollRef.current;
+    if (!node) return;
+    const amount = 340;
+    node.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
+  };
+
   return (
     <section id="trips" className="py-12 md:py-16" style={{ backgroundColor: '#004643' }}>
-      <div className="w-full">
-        <div className="no-scrollbar flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
+      <div className="relative w-full">
+        <div className="pointer-events-none absolute left-4 right-4 top-1/2 z-20 flex -translate-y-1/2 items-center justify-between md:left-8 md:right-8">
+          <button
+            type="button"
+            aria-label="Scroll trips left"
+            onClick={() => scrollCards('left')}
+            className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/70 bg-black/20 text-white transition hover:bg-white/10"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            aria-label="Scroll trips right"
+            onClick={() => scrollCards('right')}
+            className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/70 bg-black/20 text-white transition hover:bg-white/10"
+          >
+            ›
+          </button>
+        </div>
+        <div ref={scrollRef} className="no-scrollbar flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
           <article className="min-w-[320px] max-w-[320px] flex-shrink-0 snap-start px-4 md:px-10">
-            <h2 className="text-3xl font-semibold text-[#ffffff] md:text-4xl">{title}</h2>
+            <h2 className="text-3xl font-semibold text-[#ffffff] md:text-4xl">{heading}</h2>
             <p className="mt-4 text-sm text-[#ffffff]/70">{tagline}</p>
           </article>
           {trips.map((trip) => (

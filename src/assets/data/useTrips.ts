@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { TripData } from './tripTypes';
-import { FALLBACK_TRIPS } from '../../data/tripCatalog';
 
 export type TripsState = {
   trips: TripData[];
@@ -9,26 +8,6 @@ export type TripsState = {
 };
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
-
-function mapFallbackTripToTripData(trip: (typeof FALLBACK_TRIPS)[number]): TripData {
-  return {
-    slug: trip.slug,
-    title: trip.name,
-    description: trip.overview,
-    image: trip.heroImage,
-    nights: `${trip.nights} Nights`,
-    location: trip.location,
-    featured: trip.featured,
-    overview: trip.overview,
-    stats: {
-      duration: `${trip.durationDays} Days`,
-      price: `INR ${trip.discountedPrice || trip.price}`,
-    },
-    itinerary: [],
-  };
-}
-
-const FALLBACK_TRIP_DATA: TripData[] = FALLBACK_TRIPS.map(mapFallbackTripToTripData);
 
 function normalizeTripsResponse(payload: unknown): TripData[] {
   if (Array.isArray(payload)) {
@@ -72,8 +51,8 @@ export const useTrips = (): TripsState => {
       })
       .catch(() => {
         if (active) {
-          setTrips(FALLBACK_TRIP_DATA);
-          setError(null);
+          setTrips([]);
+          setError('Failed to load trips');
         }
       })
       .finally(() => {
